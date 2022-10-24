@@ -92,5 +92,5 @@ jobs:
 
       - name: valgrind
         run: |
-          chmod 777 ${{github.workspace}}/build/Tests/MOND_DB_TESTS
-          valgrind --tool=memcheck --leak-check=yes ${{github.workspace}}/build/Tests/MOND_DB_TESTS
+          chmod 777 ${{github.workspace}}/build/Tests/MatrixCalc_tests
+          valgrind --tool=memcheck --leak-check=yes ${{github.workspace}}/build/Tests/MatrixCalc_tests
