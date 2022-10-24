@@ -13,8 +13,8 @@ file(GLOB SOURCES *.cpp)
 find_package(GTest REQUIRED)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PUBLIC ${INTERFACE_MATRIX_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${INTERFACE_MATRIX_LIBRARIES} GTest::gtest_main)
+target_include_directories(${PROJECT_NAME} PUBLIC ${MATRIX_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${MATRIX_LIBRARIES} GTest::gtest_main)
 
 enable_testing()
 add_test(NAME MatrixCalc_tests COMMAND MatrixCalc_tests)

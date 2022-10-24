@@ -4,7 +4,7 @@
 //1) обращение по индексам к элементам, извлечение диагонали, строки или столбца - 1б                                 //
 //(после модификации исходной матрицы извлечённые элементы меняться не должны);                                       //
 /**********************************************************************************************************************/
-TEST(InterfaceMatrix, access_by_index_matrix) {
+TEST(MatrixBase, access_by_index_matrix) {
     Matrix<int, 2, 2> m = {{0, 1, 2, 3}};
     int arr_test[] = {0, 1, 2, 3};
     for (int i = 0; i < 2; ++i) {
@@ -14,7 +14,7 @@ TEST(InterfaceMatrix, access_by_index_matrix) {
     }
 }
 
-TEST(InterfaceMatrix, access_by_index_matrixRow) {
+TEST(MatrixBase, access_by_index_matrixRow) {
     MatrixRow<int, 2> m = {{0, 1}};
     int arr_test[] = {0, 1};
     for (int i = 0; i < 2; ++i) {
@@ -22,7 +22,7 @@ TEST(InterfaceMatrix, access_by_index_matrixRow) {
     }
 }
 
-TEST(InterfaceMatrix, access_by_index_matrixColumn) {
+TEST(MatrixBase, access_by_index_matrixColumn) {
     MatrixColumn<int, 2> m = {{0, 1}};
     int arr_test[] = {0, 1};
     for (int i = 0; i < 2; ++i) {
@@ -30,7 +30,7 @@ TEST(InterfaceMatrix, access_by_index_matrixColumn) {
     }
 }
 
-TEST(InterfaceMatrix, get_diagonal) {
+TEST(MatrixBase, get_diagonal) {
     Matrix<int, 2, 2> m = {{0, 1, 2, 3}};
     int arr_test[] = {0, 3};
 
@@ -40,7 +40,7 @@ TEST(InterfaceMatrix, get_diagonal) {
     }
 }
 
-TEST(InterfaceMatrix, get_row) {
+TEST(MatrixBase, get_row) {
     Matrix<int, 2, 2> m = {{0, 1, 2, 3}};
     int arr_test[] = {0, 1};
 
@@ -50,7 +50,7 @@ TEST(InterfaceMatrix, get_row) {
     }
 }
 
-TEST(InterfaceMatrix, get_column) {
+TEST(MatrixBase, get_column) {
     Matrix<int, 2, 2> m = {{0, 1, 2, 3}};
     int arr_test[] = {0, 2};
 
@@ -60,7 +60,7 @@ TEST(InterfaceMatrix, get_column) {
     }
 }
 
-TEST(InterfaceMatrix, retrieved_elements_do_not_change) {
+TEST(MatrixBase, retrieved_elements_do_not_change) {
     Matrix<int, 2, 2> m = {{0, 1, 2, 3}};
     int arr_test[] = {0, 1, 2, 3};
 
@@ -79,7 +79,7 @@ TEST(InterfaceMatrix, retrieved_elements_do_not_change) {
 /**********************************************************************************************************************/
 //2) возможность создания матрицы из векторов или чисел, вектора из чисел - 1б;                                       //
 /**********************************************************************************************************************/
-TEST(InterfaceMatrix, creating_matrix_from_numbers) {
+TEST(MatrixBase, creating_matrix_from_numbers) {
     Matrix<int, 2, 2> m = {{0, 1, 2, 3}};
     int arr_test[] = {0, 1, 2, 3};
 
@@ -90,7 +90,7 @@ TEST(InterfaceMatrix, creating_matrix_from_numbers) {
     }
 }
 
-TEST(InterfaceMatrix, creating_matrix_from_vectors) {
+TEST(MatrixBase, creating_matrix_from_vectors) {
     Matrix<float, 3, 3> m;
     MatrixRow<float, 3> mRow1;
     MatrixRow<float, 3> mRow2;
@@ -111,7 +111,7 @@ TEST(InterfaceMatrix, creating_matrix_from_vectors) {
     }
 }
 
-TEST(InterfaceMatrix, creating_vector_from_numbers) {
+TEST(MatrixBase, creating_vector_from_numbers) {
     MatrixRow<int, 2> m = {{0, 1, 2, 3}};
     int arr_test[] = {0, 1, 2, 3};
 
@@ -123,7 +123,7 @@ TEST(InterfaceMatrix, creating_vector_from_numbers) {
 /**********************************************************************************************************************/
 //3) поэлементное сложение/вычитание/умножение объектов одинаковой размерности - 1б;                                  //
 /**********************************************************************************************************************/
-TEST(InterfaceMatrix, element_by_element_mult_matrix) {
+TEST(MatrixBase, element_by_element_mult_matrix) {
     MatrixBase<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixBase<float, 2, 2> m02 = {{0, 1, 2, 3}};
 
@@ -137,7 +137,7 @@ TEST(InterfaceMatrix, element_by_element_mult_matrix) {
     }
 }
 
-TEST(InterfaceMatrix, element_by_element_mult_vectorRow) {
+TEST(MatrixBase, element_by_element_mult_vectorRow) {
     MatrixRow<float, 4> r01 = {{0, 1, 2, 3}};
     MatrixRow<float, 4> r02 = {{0, 1, 2, 3}};
 
@@ -149,7 +149,7 @@ TEST(InterfaceMatrix, element_by_element_mult_vectorRow) {
     }
 }
 
-TEST(InterfaceMatrix, element_by_element_mult_vectorColumn) {
+TEST(MatrixBase, element_by_element_mult_vectorColumn) {
     MatrixColumn<float, 4> c01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 4> c02 = {{0, 1, 2, 3}};
 
@@ -161,7 +161,7 @@ TEST(InterfaceMatrix, element_by_element_mult_vectorColumn) {
     }
 }
 
-TEST(InterfaceMatrix, element_by_element_add_matrix) {
+TEST(MatrixBase, element_by_element_add_matrix) {
     MatrixBase<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixBase<float, 2, 2> m02 = {{0, 1, 2, 3}};
 
@@ -175,7 +175,7 @@ TEST(InterfaceMatrix, element_by_element_add_matrix) {
     }
 }
 
-TEST(InterfaceMatrix, element_by_element_add_vectorRow) {
+TEST(MatrixBase, element_by_element_add_vectorRow) {
     MatrixRow<float, 4> r01 = {{0, 1, 2, 3}};
     MatrixRow<float, 4> r02 = {{0, 1, 2, 3}};
 
@@ -187,7 +187,7 @@ TEST(InterfaceMatrix, element_by_element_add_vectorRow) {
     }
 }
 
-TEST(InterfaceMatrix, element_by_element_add_vectorColumn) {
+TEST(MatrixBase, element_by_element_add_vectorColumn) {
     MatrixColumn<float, 4> c01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 4> c02 = {{0, 1, 2, 3}};
 
@@ -199,7 +199,7 @@ TEST(InterfaceMatrix, element_by_element_add_vectorColumn) {
     }
 }
 
-TEST(InterfaceMatrix, element_by_element_sub_matrix) {
+TEST(MatrixBase, element_by_element_sub_matrix) {
     MatrixBase<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixBase<float, 2, 2> m02 = {{0, 1, 2, 3}};
 
@@ -212,7 +212,7 @@ TEST(InterfaceMatrix, element_by_element_sub_matrix) {
     }
 }
 
-TEST(InterfaceMatrix, element_by_element_sub_vectorRow) {
+TEST(MatrixBase, element_by_element_sub_vectorRow) {
     MatrixRow<float, 4> r01 = {{0, 1, 2, 3}};
     MatrixRow<float, 4> r02 = {{0, 1, 2, 3}};
 
@@ -223,7 +223,7 @@ TEST(InterfaceMatrix, element_by_element_sub_vectorRow) {
     }
 }
 
-TEST(InterfaceMatrix, element_by_element_sub_vectorColumn) {
+TEST(MatrixBase, element_by_element_sub_vectorColumn) {
     MatrixColumn<float, 4> c01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 4> c02 = {{0, 1, 2, 3}};
 
@@ -237,7 +237,7 @@ TEST(InterfaceMatrix, element_by_element_sub_vectorColumn) {
 /**********************************************************************************************************************/
 //4) умножение числа на матрицу, вектора на матрицу, матрицы на вектор и матрицы на матрицу - 1б;                     //
 /**********************************************************************************************************************/
-TEST(InterfaceMatrix, mult_matrix_num) {
+TEST(MatrixBase, mult_matrix_num) {
     MatrixBase<float, 2, 2> m01 = {{0, 1, 2, 3}};
 
     auto res = m01 * 4;
@@ -250,7 +250,7 @@ TEST(InterfaceMatrix, mult_matrix_num) {
     }
 }
 
-TEST(InterfaceMatrix, mult_num_matrix) {
+TEST(MatrixBase, mult_num_matrix) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
 
     auto res = float(4) * m01;
@@ -263,7 +263,7 @@ TEST(InterfaceMatrix, mult_num_matrix) {
     }
 }
 
-TEST(InterfaceMatrix, mult_row_matrix) {
+TEST(MatrixBase, mult_row_matrix) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixRow<float, 2> r01 = {{0, 1}};
 
@@ -275,7 +275,7 @@ TEST(InterfaceMatrix, mult_row_matrix) {
     }
 }
 
-TEST(InterfaceMatrix, mult_matrix_column) {
+TEST(MatrixBase, mult_matrix_column) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
@@ -287,7 +287,7 @@ TEST(InterfaceMatrix, mult_matrix_column) {
     }
 }
 
-TEST(InterfaceMatrix, mult_matrix_matrix) {
+TEST(MatrixBase, mult_matrix_matrix) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     Matrix<float, 2, 2> m02 = {{0, 1, 2, 3}};
 
@@ -305,7 +305,7 @@ TEST(InterfaceMatrix, mult_matrix_matrix) {
 //5) суммирование/вычитание числа и вектора/матрицы, матрицы и вектора                                                //
 // (с возможностью выбора - по строкам/по столбцам) - 1б;                                                             //
 /**********************************************************************************************************************/
-TEST(InterfaceMatrix, add_matrix_num) {
+TEST(MatrixBase, add_matrix_num) {
     MatrixBase<float, 2, 2> m01 = {{0, 1, 2, 3}};
 
     auto res = m01 + 4;
@@ -318,7 +318,7 @@ TEST(InterfaceMatrix, add_matrix_num) {
     }
 }
 
-TEST(InterfaceMatrix, add_num_matrix) {
+TEST(MatrixBase, add_num_matrix) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
 
     auto res = float(4) + m01;
@@ -331,7 +331,7 @@ TEST(InterfaceMatrix, add_num_matrix) {
     }
 }
 
-TEST(InterfaceMatrix, sub_matrix_num) {
+TEST(MatrixBase, sub_matrix_num) {
     MatrixBase<float, 2, 2> m01 = {{0, 1, 2, 3}};
 
     auto res = m01 - float(4);
@@ -344,7 +344,7 @@ TEST(InterfaceMatrix, sub_matrix_num) {
     }
 }
 
-TEST(InterfaceMatrix, add_row_num) {
+TEST(MatrixBase, add_row_num) {
     MatrixRow<float, 2> r01 = {{0, 1}};
 
     auto res = r01 + 4;
@@ -355,7 +355,7 @@ TEST(InterfaceMatrix, add_row_num) {
     }
 }
 
-TEST(InterfaceMatrix, add_num_row) {
+TEST(MatrixBase, add_num_row) {
     MatrixRow<float, 2> r01 = {{0, 1}};
 
     auto res = float(4) + r01;
@@ -366,7 +366,7 @@ TEST(InterfaceMatrix, add_num_row) {
     }
 }
 
-TEST(InterfaceMatrix, sub_row_num) {
+TEST(MatrixBase, sub_row_num) {
     MatrixRow<float, 2> r01 = {{0, 1, 2, 3}};
 
     auto res = r01 - 4;
@@ -377,7 +377,7 @@ TEST(InterfaceMatrix, sub_row_num) {
     }
 }
 
-TEST(InterfaceMatrix, add_column_num) {
+TEST(MatrixBase, add_column_num) {
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
     auto res = c01 + 4;
@@ -388,7 +388,7 @@ TEST(InterfaceMatrix, add_column_num) {
     }
 }
 
-TEST(InterfaceMatrix, add_column_row) {
+TEST(MatrixBase, add_column_row) {
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
     auto res = float(4) + c01;
@@ -399,7 +399,7 @@ TEST(InterfaceMatrix, add_column_row) {
     }
 }
 
-TEST(InterfaceMatrix, sub_column_num) {
+TEST(MatrixBase, sub_column_num) {
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
     auto res = c01 - 4;
@@ -410,7 +410,7 @@ TEST(InterfaceMatrix, sub_column_num) {
     }
 }
 
-TEST(InterfaceMatrix, add_matrix_row_line_by_line) {
+TEST(MatrixBase, add_matrix_row_line_by_line) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixRow<float, 2> r01 = {{0, 1}};
 
@@ -438,7 +438,7 @@ TEST(InterfaceMatrix, add_matrix_row_line_by_line) {
 //    }
 //}
 //
-TEST(InterfaceMatrix, add_matrix_column_line_by_line) {
+TEST(MatrixBase, add_matrix_column_line_by_line) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
@@ -452,7 +452,7 @@ TEST(InterfaceMatrix, add_matrix_column_line_by_line) {
     }
 }
 
-TEST(InterfaceMatrix, sub_matrix_row_line_by_line) {
+TEST(MatrixBase, sub_matrix_row_line_by_line) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixRow<float, 2> r01 = {{0, 1}};
 
@@ -466,7 +466,7 @@ TEST(InterfaceMatrix, sub_matrix_row_line_by_line) {
     }
 }
 
-TEST(InterfaceMatrix, sub_matrix_column_line_by_line) {
+TEST(MatrixBase, sub_matrix_column_line_by_line) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
@@ -483,7 +483,7 @@ TEST(InterfaceMatrix, sub_matrix_column_line_by_line) {
 /**********************************************************************************************************************/
 //6) получение транспонированной и обратной матриц - 1б;                                                              //
 /**********************************************************************************************************************/
-TEST(InterfaceMatrix, transponce_matrix) {
+TEST(MatrixBase, transponce_matrix) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
 
     auto res = m01.transposed();
@@ -496,7 +496,7 @@ TEST(InterfaceMatrix, transponce_matrix) {
     }
 }
 
-TEST(InterfaceMatrix, inverted_matrix) {
+TEST(MatrixBase, inverted_matrix) {
     Matrix<float, 3, 3> m01 = {{1, 2, 3, 2, 3, 3, 2, 2, 2}};
 
     auto res = m01.inverted();
@@ -512,7 +512,7 @@ TEST(InterfaceMatrix, inverted_matrix) {
 /**********************************************************************************************************************/
 //7) подсчёт определителя матрицы - 1б.                                                                               //
 /**********************************************************************************************************************/
-TEST(InterfaceMatrix, determinant_matrix) {
+TEST(MatrixBase, determinant_matrix) {
     Matrix<float, 4, 4> m01 = { { 1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3 , 1, 0, 5, 0 } };
 
     auto res = m01.determinant(4);;
@@ -525,7 +525,7 @@ TEST(InterfaceMatrix, determinant_matrix) {
 //В качестве примерного интерфейса можно опираться на то, как это сделано в " аналоге numpy на C++"                   //
 //https://github.com/dpilger26/NumCpp -1б;                                                                            //
 /**********************************************************************************************************************/
-TEST(InterfaceMatrix, TEST8) {
+TEST(MatrixBase, TEST8) {
     std::string TRUE = "ya obyazatel'no sdelayu eto *picture with cat*";
     EXPECT_TRUE(true);
 }
