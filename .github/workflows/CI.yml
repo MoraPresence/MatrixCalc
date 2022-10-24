@@ -66,8 +66,8 @@ jobs:
       - name: Test
         run: |
           cd ${{ github.workspace }}/build/Tests/
-          chmod 777 MOND_DB_TESTS
-          ./MOND_DB_TESTS
+          chmod 777 MatrixCalc_tests
+          ./MatrixCalc_tests
   
 
   sanitisers:
