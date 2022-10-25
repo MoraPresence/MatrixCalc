@@ -83,40 +83,40 @@ MatrixColumn<T, rowCount> MatrixColumn<T, rowCount>::operator-(MatrixColumn<T, r
     return operator-=(other);
 }
 
-template<typename T, size_t columnsCount>
-MatrixColumn<T, columnsCount> MatrixColumn<T, columnsCount>::operator+=(const T &num) {
+template<typename T, size_t rowCount>
+MatrixColumn<T, rowCount> MatrixColumn<T, rowCount>::operator+=(const T &num) {
     for (auto &i: this->cells) {
         i += num;
     }
     return *this;
 }
 
-template<typename T, size_t columnsCount>
-MatrixColumn<T, columnsCount> MatrixColumn<T, columnsCount>::operator+(const T &num) {
-    return *this += num;
+template<typename T, size_t rowCount>
+MatrixColumn<T, rowCount> MatrixColumn<T, rowCount>::operator+(const T &num) {
+    return MatrixColumn<T, rowCount>(*this) += num;
 }
 
-template<typename T, size_t columnsCount>
-MatrixColumn<T, columnsCount> operator+=(const T &num, MatrixColumn<T, columnsCount> &matrix) {
+template<typename T, size_t rowCount>
+MatrixColumn<T, rowCount> operator+=(const T &num, MatrixColumn<T, rowCount> &matrix) {
     return matrix.operator+=(num);
 }
 
-template<typename T, size_t columnsCount>
-MatrixColumn<T, columnsCount> operator+(const T &num, MatrixColumn<T, columnsCount> &matrix) {
+template<typename T, size_t rowCount>
+MatrixColumn<T, rowCount> operator+(const T &num, MatrixColumn<T, rowCount> &matrix) {
     return operator+=(num, matrix);
 }
 
-template<typename T, size_t columnsCount>
-MatrixColumn<T, columnsCount> MatrixColumn<T, columnsCount>::operator-=(const T &num) {
+template<typename T, size_t rowCount>
+MatrixColumn<T, rowCount> MatrixColumn<T, rowCount>::operator-=(const T &num) {
     for (auto &i: this->cells) {
         i -= num;
     }
     return *this;
 }
 
-template<typename T, size_t columnsCount>
-MatrixColumn<T, columnsCount> MatrixColumn<T, columnsCount>::operator-(const T &num) {
-    return *this -= num;
+template<typename T, size_t rowCount>
+MatrixColumn<T, rowCount> MatrixColumn<T, rowCount>::operator-(const T &num) {
+    return MatrixColumn<T, rowCount>(*this) -= num;
 }
 
 #endif //MATRIXCALC_MATRIXCOLUMN_H

@@ -102,7 +102,7 @@ MatrixRow<T, columnsCount> MatrixRow<T, columnsCount>::operator+=(const T &num) 
 
 template<typename T, size_t columnsCount>
 MatrixRow<T, columnsCount> MatrixRow<T, columnsCount>::operator+(const T &num) {
-    return *this += num;
+    return MatrixRow<T, columnsCount>(*this) += num;
 }
 
 template<typename T, size_t columnsCount>
@@ -125,7 +125,7 @@ MatrixRow<T, columnsCount> MatrixRow<T, columnsCount>::operator-=(const T &num) 
 
 template<typename T, size_t columnsCount>
 MatrixRow<T, columnsCount> MatrixRow<T, columnsCount>::operator-(const T &num) {
-    return *this -= num;
+    return MatrixRow<T, columnsCount>(*this) -= num;
 }
 
 #endif //MATRIXCALC_MATRIXROW_H
