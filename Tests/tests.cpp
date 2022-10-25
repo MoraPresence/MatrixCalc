@@ -525,9 +525,13 @@ TEST(MatrixBase, determinant_matrix) {
 //В качестве примерного интерфейса можно опираться на то, как это сделано в " аналоге numpy на C++"                   //
 //https://github.com/dpilger26/NumCpp -1б;                                                                            //
 /**********************************************************************************************************************/
-TEST(MatrixBase, TEST8) {
-    std::string TRUE = "ya obyazatel'no sdelayu eto *picture with cat*";
-    EXPECT_TRUE(true);
+TEST(MatrixBase, matrix_slices) {
+    Matrix<float, 4, 4> m01 = { { 1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3 , 1, 0, 5, 0 } };
+    float arr_test[] = {1, 0};
+    auto slice = m01.Slice(0, 2);
+    for (int i = 0; i < 2; ++i) {
+        EXPECT_EQ(slice(i), arr_test[i]);
+    }
 }
 
 

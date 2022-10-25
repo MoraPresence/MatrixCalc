@@ -8,6 +8,7 @@
 #include "MatrixBase.h"
 #include "MatrixColumn.h"
 #include "MatrixRow.h"
+#include "MatrixSlice.h"
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 class Matrix : public MatrixBase<T, rowsCount, columnsCount> {
@@ -84,7 +85,7 @@ public:
 
     Matrix<T, rowsCount, columnsCount> subtraction(MatrixColumn<T, columnsCount> &matrix);
 
-    T *Slice(size_t start, size_t end);
+    MatrixSlice<T> Slice(size_t start, size_t end);
 
     T determinant(size_t size);
 
@@ -316,10 +317,11 @@ Matrix<T, rowsCount, columnsCount>::subtraction(MatrixColumn<T, columnsCount> &m
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
-T *Matrix<T, rowsCount, columnsCount>::Slice(size_t start, size_t end) {
+MatrixSlice<T> Matrix<T, rowsCount, columnsCount>::Slice(size_t start, size_t end) {
     if (start < 0 || end > rowsCount * columnsCount)
         throw std::runtime_error("Slice out of range");
-    return MatrixRow<T, columnsCount>();
+
+    return MatrixSlice<T>(this->Begin() + start, start, end, this->cells.size());
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
