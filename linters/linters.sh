@@ -22,7 +22,7 @@ function check_log() {
 }
 
 print_header "RUN clang-tidy"
-check_log "clang-tidy ./Tests/*.cpp -warnings-as-errors=* -extra-arg=-std=c++17 -- -I/MatrixBase/" "Error (?:reading|while processing)"
+check_log "clang-tidy ./Tests/*.cpp -warnings-as-errors=* -extra-arg=-std=c++17 -- -ITP2022_CPP_MatrixCalc/TP2022_CPP_MatrixCalc/MatrixBase/Matrix.h" "Error (?:reading|while processing)"
 
 print_header "RUN cpplint"
 check_log "cpplint ./Tests/*.cpp" "Can't open for reading"
