@@ -258,9 +258,9 @@ TEST(MatrixBase, mult_matrix_num) {
 }
 
 TEST(MatrixBase, mult_num_matrix) {
-    Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
+    Matrix<int, 2, 2> m01 = {{0, 1, 2, 3}};
 
-    auto res = float(4) * m01;
+    auto res = 4 * m01;
     int arr_test[] = {0, 4, 8, 12};
 
     for (int i = 0; i < 2; ++i) {
@@ -326,9 +326,9 @@ TEST(MatrixBase, add_matrix_num) {
 }
 
 TEST(MatrixBase, add_num_matrix) {
-    Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
+    Matrix<int, 2, 2> m01 = {{0, 1, 2, 3}};
 
-    auto res = float(4) + m01;
+    auto res = 4 + m01;
     int arr_test[] = {4, 5, 6, 7};
 
     for (int i = 0; i < 2; ++i) {
@@ -339,9 +339,9 @@ TEST(MatrixBase, add_num_matrix) {
 }
 
 TEST(MatrixBase, sub_matrix_num) {
-    MatrixBase<float, 2, 2> m01 = {{0, 1, 2, 3}};
+    MatrixBase<int, 2, 2> m01 = {{0, 1, 2, 3}};
 
-    auto res = m01 - float(4);
+    auto res = m01 - 4;
     int arr_test[] = {-4, -3, -2, -1};
 
     for (int i = 0; i < 2; ++i) {
@@ -363,9 +363,9 @@ TEST(MatrixBase, add_row_num) {
 }
 
 TEST(MatrixBase, add_num_row) {
-    MatrixRow<float, 2> r01 = {{0, 1}};
+    MatrixRow<int, 2> r01 = {{0, 1}};
 
-    auto res = float(4) + r01;
+    auto res = 4 + r01;
     int arr_test[] = {4, 5};
 
     for (int i = 0; i < 2; ++i) {
@@ -396,9 +396,9 @@ TEST(MatrixBase, add_column_num) {
 }
 
 TEST(MatrixBase, add_column_row) {
-    MatrixColumn<float, 2> c01 = {{0, 1}};
+    MatrixColumn<int, 2> c01 = {{0, 1}};
 
-    auto res = float(4) + c01;
+    auto res = 4 + c01;
     int arr_test[] = {4, 5};
 
     for (int i = 0; i < 2; ++i) {
@@ -506,7 +506,8 @@ TEST(MatrixBase, inverted_matrix) {
 // 7) подсчёт определителя матрицы - 1б.                                     //
 /*****************************************************************************/
 TEST(MatrixBase, determinant_matrix) {
-    Matrix<float, 4, 4> m01 = { { 1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3 , 1, 0, 5, 0 } };
+    Matrix<float, 4, 4> m01 =
+            { { 1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3 , 1, 0, 5, 0 } };
 
     auto res = m01.determinant(4);;
 
@@ -514,14 +515,15 @@ TEST(MatrixBase, determinant_matrix) {
 }
 
 /*****************************************************************************/
-//8)- поддержка "слайсов, как в питоне" (на уровне методов,                  //
+// 8)- поддержка "слайсов, как в питоне" (на уровне методов,                  //
 // т.к. операторы такой синтаксис не поддерживают).                          //
-//В качестве примерного интерфейса можно опираться на то,                    //
+// В качестве примерного интерфейса можно опираться на то,                    //
 // как это сделано в " аналоге numpy на C++"                                 //
-//https://github.com/dpilger26/NumCpp -1б;                                   //
+// https://github.com/dpilger26/NumCpp -1б;                                   //
 /*****************************************************************************/
 TEST(MatrixBase, matrix_slices) {
-    Matrix<float, 4, 4> m01 = { { 1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3 , 1, 0, 5, 0 } };
+    Matrix<float, 4, 4> m01 =
+            { { 1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3 , 1, 0, 5, 0 } };
     float arr_test[] = {1, 0};
     auto slice = m01.Slice(0, 2);
     for (int i = 0; i < 2; ++i) {
