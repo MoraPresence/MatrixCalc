@@ -101,9 +101,9 @@ TEST(MatrixBase, creating_matrix_from_vectors) {
     MatrixRow<float, 3> mRow2;
     MatrixRow<float, 3> mRow3;
 
-    mRow1 = {{1, 2, 3}};
-    mRow2 = {{4, 5, 6}};
-    mRow3 = {{7, 8, 9}};
+    mRow1 = {1, 2, 3};
+    mRow2 = {4, 5, 6};
+    mRow3 = {7, 8, 9};
 
     int arr_test[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
@@ -147,7 +147,7 @@ TEST(MatrixBase, element_by_element_mult_vectorRow) {
     MatrixRow<float, 4> r01 = {{0, 1, 2, 3}};
     MatrixRow<float, 4> r02 = {{0, 1, 2, 3}};
 
-    auto res = r01 * r02;
+    MatrixRow<float, 4> res = r01 * r02;
     int arr_test[] = {0, 1, 4, 9};
 
     for (int i = 0; i < 4; ++i) {
@@ -159,7 +159,7 @@ TEST(MatrixBase, element_by_element_mult_vectorColumn) {
     MatrixColumn<float, 4> c01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 4> c02 = {{0, 1, 2, 3}};
 
-    auto res = c01 * c02;
+    MatrixColumn<float, 4> res = c01 * c02;
     int arr_test[] = {0, 1, 4, 9};
 
     for (int i = 0; i < 4; ++i) {
@@ -185,7 +185,7 @@ TEST(MatrixBase, element_by_element_add_vectorRow) {
     MatrixRow<float, 4> r01 = {{0, 1, 2, 3}};
     MatrixRow<float, 4> r02 = {{0, 1, 2, 3}};
 
-    auto res = r01 + r02;
+    MatrixRow<float, 4> res = r01 + r02;
     int arr_test[] = {0, 2, 4, 6};
 
     for (int i = 0; i < 4; ++i) {
@@ -197,7 +197,7 @@ TEST(MatrixBase, element_by_element_add_vectorColumn) {
     MatrixColumn<float, 4> c01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 4> c02 = {{0, 1, 2, 3}};
 
-    auto res = c01 + c02;
+    MatrixColumn<float, 4> res = c01 + c02;
     int arr_test[] = {0, 2, 4, 6};
 
     for (int i = 0; i < 4; ++i) {
@@ -222,7 +222,7 @@ TEST(MatrixBase, element_by_element_sub_vectorRow) {
     MatrixRow<float, 4> r01 = {{0, 1, 2, 3}};
     MatrixRow<float, 4> r02 = {{0, 1, 2, 3}};
 
-    auto res = r01 - r02;
+    MatrixRow<float, 4> res = r01 - r02;
 
     for (int i = 0; i < 4; ++i) {
         EXPECT_EQ(*res(i), 0);
@@ -233,7 +233,7 @@ TEST(MatrixBase, element_by_element_sub_vectorColumn) {
     MatrixColumn<float, 4> c01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 4> c02 = {{0, 1, 2, 3}};
 
-    auto res = c01 - c02;
+    MatrixColumn<float, 4> res = c01 - c02;
 
     for (int i = 0; i < 4; ++i) {
         EXPECT_EQ(*res(i), 0);
@@ -245,9 +245,9 @@ TEST(MatrixBase, element_by_element_sub_vectorColumn) {
 // матрицы на вектор и матрицы на матрицу - 1б;                              //
 /*****************************************************************************/
 TEST(MatrixBase, mult_matrix_num) {
-    MatrixBase<float, 2, 2> m01 = {{0, 1, 2, 3}};
+    MatrixBase<int, 2, 2> m01 = {{0, 1, 2, 3}};
 
-    auto res = m01 * 4;
+    Matrix<int, 2, 2> res = m01 * 4;
     int arr_test[] = {0, 4, 8, 12};
 
     for (int i = 0; i < 2; ++i) {
@@ -260,7 +260,7 @@ TEST(MatrixBase, mult_matrix_num) {
 TEST(MatrixBase, mult_num_matrix) {
     Matrix<int, 2, 2> m01 = {{0, 1, 2, 3}};
 
-    auto res = 4 * m01;
+    Matrix<int, 2, 2> res = 4 * m01;
     int arr_test[] = {0, 4, 8, 12};
 
     for (int i = 0; i < 2; ++i) {
@@ -274,11 +274,11 @@ TEST(MatrixBase, mult_row_matrix) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixRow<float, 2> r01 = {{0, 1}};
 
-    auto res = r01 * m01;
+    MatrixRow<float, 2> res = r01 * m01;
     int arr_test[] = {2, 3};
 
     for (int i = 0; i < 2; ++i) {
-            EXPECT_EQ(*res(i), arr_test[i]);
+        EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
 
@@ -286,7 +286,7 @@ TEST(MatrixBase, mult_matrix_column) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
-    auto res =  m01 * c01;
+    MatrixColumn<float, 2> res = m01 * c01;
     int arr_test[] = {1, 3};
 
     for (int i = 0; i < 2; ++i) {
@@ -297,8 +297,9 @@ TEST(MatrixBase, mult_matrix_column) {
 TEST(MatrixBase, mult_matrix_matrix) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     Matrix<float, 2, 2> m02 = {{0, 1, 2, 3}};
-
-    auto res = m01 * m02;
+    // да, я знаю, что основная операция произведения != произведение Адамара
+    // просто так красивше...
+    auto res = m01.multiply(m02);
     int arr_test[] = {2, 3, 6, 11};
 
     for (int i = 0; i < 2; ++i) {
@@ -328,7 +329,7 @@ TEST(MatrixBase, add_matrix_num) {
 TEST(MatrixBase, add_num_matrix) {
     Matrix<int, 2, 2> m01 = {{0, 1, 2, 3}};
 
-    auto res = 4 + m01;
+    Matrix<int, 2, 2> res = 4 + m01;
     int arr_test[] = {4, 5, 6, 7};
 
     for (int i = 0; i < 2; ++i) {
@@ -354,18 +355,18 @@ TEST(MatrixBase, sub_matrix_num) {
 TEST(MatrixBase, add_row_num) {
     MatrixRow<float, 2> r01 = {{0, 1}};
 
-    auto res = r01 + 4;
+    MatrixRow<float, 2> res = r01 + 4;
     int arr_test[] = {4, 5};
 
     for (int i = 0; i < 2; ++i) {
-            EXPECT_EQ(*res(i), arr_test[i]);
+        EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
 
 TEST(MatrixBase, add_num_row) {
     MatrixRow<int, 2> r01 = {{0, 1}};
 
-    auto res = 4 + r01;
+    MatrixRow<int, 2> res = 4 + r01;
     int arr_test[] = {4, 5};
 
     for (int i = 0; i < 2; ++i) {
@@ -376,18 +377,18 @@ TEST(MatrixBase, add_num_row) {
 TEST(MatrixBase, sub_row_num) {
     MatrixRow<float, 2> r01 = {{0, 1, 2, 3}};
 
-    auto res = r01 - 4;
+    MatrixRow<float, 2> res = r01 - 4;
     int arr_test[] = {-4, -3};
 
     for (int i = 0; i < 2; ++i) {
-            EXPECT_EQ(*res(i), arr_test[i]);
+        EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
 
 TEST(MatrixBase, add_column_num) {
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
-    auto res = c01 + 4;
+    MatrixColumn<float, 2> res = c01 + 4;
     int arr_test[] = {4, 5};
 
     for (int i = 0; i < 2; ++i) {
@@ -398,7 +399,7 @@ TEST(MatrixBase, add_column_num) {
 TEST(MatrixBase, add_column_row) {
     MatrixColumn<int, 2> c01 = {{0, 1}};
 
-    auto res = 4 + c01;
+    MatrixColumn<int, 2> res = 4 + c01;
     int arr_test[] = {4, 5};
 
     for (int i = 0; i < 2; ++i) {
@@ -409,11 +410,11 @@ TEST(MatrixBase, add_column_row) {
 TEST(MatrixBase, sub_column_num) {
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
-    auto res = c01 - 4;
+    MatrixColumn<float, 2> res = c01 - 4;
     int arr_test[] = {-4, -3};
 
     for (int i = 0; i < 2; ++i) {
-            EXPECT_EQ(*res(i), arr_test[i]);
+        EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
 
@@ -421,7 +422,7 @@ TEST(MatrixBase, add_matrix_row_line_by_line) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixRow<float, 2> r01 = {{0, 1}};
 
-    auto res = m01 + r01;
+    Matrix<float, 2, 2> res = m01 + r01;
     int arr_test[] = {0, 2, 2, 4};
 
     for (int i = 0; i < 2; ++i) {
@@ -435,7 +436,7 @@ TEST(MatrixBase, add_matrix_column_line_by_line) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
-    auto res = m01 + c01;
+    Matrix<float, 2, 2> res = m01 + c01;
     int arr_test[] = {0, 1, 3, 4};
 
     for (int i = 0; i < 2; ++i) {
@@ -449,7 +450,7 @@ TEST(MatrixBase, sub_matrix_row_line_by_line) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixRow<float, 2> r01 = {{0, 1}};
 
-    auto res = m01 - r01;
+    Matrix<float, 2, 2> res = m01 - r01;
     int arr_test[] = {0, 0, 2, 2};
 
     for (int i = 0; i < 2; ++i) {
@@ -463,7 +464,7 @@ TEST(MatrixBase, sub_matrix_column_line_by_line) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
     MatrixColumn<float, 2> c01 = {{0, 1}};
 
-    auto res = m01 - c01;
+    Matrix<float, 2, 2> res = m01 - c01;
     int arr_test[] = {0, 1, 1, 2};
 
     for (int i = 0; i < 2; ++i) {
@@ -507,7 +508,7 @@ TEST(MatrixBase, inverted_matrix) {
 /*****************************************************************************/
 TEST(MatrixBase, determinant_matrix) {
     Matrix<float, 4, 4> m01 =
-            { { 1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3 , 1, 0, 5, 0 } };
+            {{1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3, 1, 0, 5, 0}};
 
     auto res = m01.determinant(4);;
 
@@ -523,7 +524,7 @@ TEST(MatrixBase, determinant_matrix) {
 /*****************************************************************************/
 TEST(MatrixBase, matrix_slices) {
     Matrix<float, 4, 4> m01 =
-            { { 1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3 , 1, 0, 5, 0 } };
+            {{1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3, 1, 0, 5, 0}};
     float arr_test[] = {1, 0};
     auto slice = m01.Slice(0, 2);
     for (int i = 0; i < 2; ++i) {

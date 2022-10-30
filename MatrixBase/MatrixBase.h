@@ -32,7 +32,7 @@ public:
 
     MatrixBase(std::initializer_list<T> list);
 
-    explicit MatrixBase(std::array<T, columnsCount> &arr);
+    MatrixBase(std::array<T, columnsCount> &arr);
 
     ~MatrixBase();
 /**********************************************************************************************************************/
@@ -42,6 +42,8 @@ public:
     MatrixBase &operator=(MatrixBase const &other);
 
     MatrixBase &operator=(MatrixBase &&other) noexcept;
+
+    MatrixBase &operator=(std::initializer_list<T> list);
 
     MatrixBase operator+(MatrixBase other);
 
@@ -67,7 +69,7 @@ public:
 
     MatrixBase operator-(const T &num);
 
-    T *operator()(size_t i, size_t j);
+    virtual T *operator()(size_t i, size_t j);
 /**********************************************************************************************************************/
 
 
@@ -83,8 +85,9 @@ public:
 
 
 /************************************************friends***************************************************************/
-    friend std::ostream &operator<<<T, rowsCount, columnsCount>
-            (std::ostream &, MatrixBase<T, rowsCount, columnsCount> &);
+    friend std::ostream &operator
+    <<<T, rowsCount, columnsCount>
+    (std::ostream &, MatrixBase<T, rowsCount, columnsCount> &);
 
     friend void swap<T, rowsCount, columnsCount>
             (MatrixBase<T, rowsCount, columnsCount> &first, MatrixBase<T, rowsCount, columnsCount> &second);
@@ -132,7 +135,14 @@ template<typename T, size_t rowsCount, size_t columnsCount>
 MatrixBase<T, rowsCount, columnsCount> &
 MatrixBase<T, rowsCount, columnsCount>::operator=(MatrixBase &&other) noexcept {
     swap(*this, other);
-    return MatrixBase<T, rowsCount, columnsCount>(*this);
+    return *this;
+}
+
+template<typename T, size_t rowsCount, size_t columnsCount>
+MatrixBase<T, rowsCount, columnsCount> &
+MatrixBase<T, rowsCount, columnsCount>::operator=(std::initializer_list<T> list) {
+    std::copy(list.begin(), list.end(), cells.begin());
+    return *this;
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>

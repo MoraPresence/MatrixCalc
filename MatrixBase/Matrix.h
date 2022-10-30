@@ -12,15 +12,24 @@
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 class Matrix : public MatrixBase<T, rowsCount, columnsCount> {
-public:
     using MatrixBase<T, rowsCount, columnsCount>::MatrixBase;
+public:
+    using MatrixBase<T, rowsCount, columnsCount>::operator+=;
+    using MatrixBase<T, rowsCount, columnsCount>::operator+;
+    using MatrixBase<T, rowsCount, columnsCount>::operator-=;
+    using MatrixBase<T, rowsCount, columnsCount>::operator-;
+    using MatrixBase<T, rowsCount, columnsCount>::operator*=;
+    using MatrixBase<T, rowsCount, columnsCount>::operator*;
+    using MatrixBase<T, rowsCount, columnsCount>::operator=;
+    using MatrixBase<T, rowsCount, columnsCount>::Begin;
+    using MatrixBase<T, rowsCount, columnsCount>::End;
 
 /************************************************constructors**********************************************************/
     Matrix() : MatrixBase<T, rowsCount, columnsCount>() {};
 
     Matrix(const Matrix &other) : MatrixBase<T, rowsCount, columnsCount>(other) {};
 
-    explicit Matrix(const MatrixBase<T, rowsCount, columnsCount> &other) : MatrixBase<T, rowsCount, columnsCount>(
+    Matrix(const MatrixBase<T, rowsCount, columnsCount> &other) : MatrixBase<T, rowsCount, columnsCount>(
             other) {};
 
     Matrix(std::initializer_list<MatrixRow<T, columnsCount>> list, size_t rows);
@@ -33,10 +42,6 @@ public:
 /************************************************operators*************************************************************/
     friend std::ostream &operator<<<T, rowsCount, columnsCount>
             (std::ostream &, MatrixBase<T, rowsCount, columnsCount> &);
-
-    Matrix operator*=(Matrix &other);
-
-    Matrix operator*(Matrix &other);
 
     MatrixColumn<T, rowsCount> operator*=(MatrixColumn<T, rowsCount> &other);
 
@@ -97,6 +102,7 @@ public:
 /**********************************************************************************************************************/
 };
 
+
 /************************************************constructors**********************************************************/
 template<typename T, size_t rowsCount, size_t columnsCount>
 Matrix<T, rowsCount, columnsCount>::Matrix(std::initializer_list<MatrixRow<T, columnsCount>> list, const size_t rows) {
@@ -115,23 +121,13 @@ Matrix<T, rows, columns>::~Matrix() = default;
 
 /************************************************operators*************************************************************/
 template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator*=(Matrix &other) {
-    return this->multiply(other);
-}
-
-template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator*(Matrix &other) {
-    return this->operator*=(other);
-}
-
-template<typename T, size_t rowsCount, size_t columnsCount>
 MatrixColumn<T, rowsCount> Matrix<T, rowsCount, columnsCount>::operator*=(MatrixColumn<T, rowsCount> &other) {
-    return this->multiply(other);
+    return Matrix<T, columnsCount, columnsCount>(*this).multiply(other);
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 MatrixColumn<T, rowsCount> Matrix<T, rowsCount, columnsCount>::operator*(MatrixColumn<T, rowsCount> &other) {
-    return this->operator*=(other);
+    return operator*=(other);
 }
 
 template<typename T, size_t columnsCount>
