@@ -6,6 +6,12 @@
 #include <iostream>
 
 template<typename T>
+class MatrixSlice;
+
+template<typename T>
+std::ostream &operator<<(std::ostream &, MatrixSlice<T> &);
+
+template<typename T>
 class MatrixSlice {
     size_t _cap;
     size_t _len;
@@ -21,6 +27,9 @@ public:
     ~MatrixSlice();
 
     T operator()(size_t i);
+
+    friend std::ostream &operator
+        << <>(std::ostream &, MatrixSlice<T> &);
 };
 
 template<typename T>
@@ -44,7 +53,6 @@ T MatrixSlice<T>::operator()(size_t i) {
         throw std::runtime_error("Out of slice");
     return _ptrArr[i];
 }
-
 
 template<typename T>
 std::ostream &operator<<(std::ostream &out, MatrixSlice<T> &slice) {

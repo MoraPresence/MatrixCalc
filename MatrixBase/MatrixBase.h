@@ -86,8 +86,7 @@ public:
 
 /************************************************friends***************************************************************/
     friend std::ostream &operator
-    <<<T, rowsCount, columnsCount>
-    (std::ostream &, MatrixBase<T, rowsCount, columnsCount> &);
+        << <>(std::ostream &, MatrixBase<T, rowsCount, columnsCount> &);
 
     friend void swap<T, rowsCount, columnsCount>
             (MatrixBase<T, rowsCount, columnsCount> &first, MatrixBase<T, rowsCount, columnsCount> &second);
@@ -185,9 +184,7 @@ T *MatrixBase<T, rowsCount, columnsCount>::operator()(size_t i, size_t j) {
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 MatrixBase<T, rowsCount, columnsCount> MatrixBase<T, rowsCount, columnsCount>::operator*=(const T &num) {
-    for (auto &i: this->cells) {
-        i *= num;
-    }
+    std::transform(this->Begin(), this->End(), this->Begin(), [&num](T &i) { return i *= num; });
     return *this;
 }
 
@@ -208,9 +205,7 @@ MatrixBase<T, rowsCount, columnsCount> operator*(const T &num, MatrixBase<T, row
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 MatrixBase<T, rowsCount, columnsCount> MatrixBase<T, rowsCount, columnsCount>::operator+=(const T &num) {
-    for (auto &i: this->cells) {
-        i += num;
-    }
+    std::transform(this->Begin(), this->End(), this->Begin(), [&num](T &i) { return i += num; });
     return *this;
 }
 
@@ -231,9 +226,7 @@ MatrixBase<T, rowsCount, columnsCount> operator+(const T &num, MatrixBase<T, row
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 MatrixBase<T, rowsCount, columnsCount> MatrixBase<T, rowsCount, columnsCount>::operator-=(const T &num) {
-    for (auto &i: this->cells) {
-        i -= num;
-    }
+    std::transform(this->Begin(), this->End(), this->Begin(), [&num](T &i) { return i -= num; });
     return *this;
 }
 
