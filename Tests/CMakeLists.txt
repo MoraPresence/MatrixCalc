@@ -3,16 +3,17 @@ project(MatrixCalc_tests CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
-if (BUILD_FOR_TEST)
-    set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-fprofile-arcs -ftest-coverage -O0")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wshadow -Wconversion -Wpedantic")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wunreachable-code -pedantic -pthread")
+
+if (ENABLE_TESTING)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -fprofile-arcs -ftest-coverage -fPIC")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -coverage -lgcov" )
 endif ()
 
-file(GLOB SOURCES *.cpp)
-
 find_package(GTest REQUIRED)
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_executable(${PROJECT_NAME} tests.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC ${MATRIX_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${MATRIX_LIBRARIES} GTest::gtest_main)
 

@@ -3,16 +3,32 @@ name: CI
 on:
   push:
     branches: [ "main", "moraBranch" ]
-  pull_request:
-    branches: [ "main", "moraBranch" ]
 
 env:
   BUILD_TYPE: Debug
 
 jobs:
-  build-project:
+  cppcheck:
     runs-on: ubuntu-latest
     container: morapresence/mond_db_tests
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: run_cppcheck
+        run: bash scripts/linters/linters.sh --cppcheck ./Tests/*.cpp
+
+  cpplint:
+      runs-on: ubuntu-latest
+      container: morapresence/mond_db_tests
+
+      steps:
+        - uses: actions/checkout@v3
+        - name: run_cpplint
+          run: bash scripts/linters/linters.sh --cpplint ./Tests/*.cpp
+
+  build-project:
+    runs-on: ubuntu-latest
+    container: morapresence/mond_db_debug
 
     steps:
       - uses: actions/checkout@v3
@@ -29,26 +45,11 @@ jobs:
           name: my-artifact
           path: ${{ github.workflow }}/build/**/*
 
-  linters:
-    needs: [ build-project ]
-
-    runs-on: ubuntu-latest
-    container: morapresence/mond_db_tests
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: run_linters
-        working-directory: ${{github.workspace}}
-        run: |
-          chmod 777 ./linters/linters.sh
-          ./linters/linters.sh
-  
-
   tests:
     needs: [ build-project ]
 
     runs-on: ubuntu-latest
-    container: morapresence/mond_db_tests
+    container: morapresence/mond_db_debug
 
     steps:
       - uses: actions/checkout@v3
@@ -68,9 +69,16 @@ jobs:
           cd ${{ github.workspace }}/build/Tests/
           chmod 777 MatrixCalc_tests
           ./MatrixCalc_tests
+
+      - name: Coverage
+        run: |
+          cp -r ${{ github.workflow }}/build/* ${{ github.workspace }}/build
+          cd ${{ github.workspace }}/build/
+          lcov -t . -o coverage_report.info -c -d .
+          genhtml -o coverage_report coverage_report.info
   
 
-  sanitisers:
+  valgrind:
     needs: [ build-project ]
 
     runs-on: ubuntu-latest

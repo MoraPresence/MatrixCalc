@@ -12,8 +12,8 @@
 TEST(MatrixBase, access_by_index_matrix) {
     Matrix<int, 2, 2> m = {{0, 1, 2, 3}};
     int arr_test[] = {0, 1, 2, 3};
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*m(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -22,7 +22,7 @@ TEST(MatrixBase, access_by_index_matrix) {
 TEST(MatrixBase, access_by_index_matrixRow) {
     MatrixRow<int, 2> m = {{0, 1}};
     int arr_test[] = {0, 1};
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*m(i), arr_test[i]);
     }
 }
@@ -30,7 +30,7 @@ TEST(MatrixBase, access_by_index_matrixRow) {
 TEST(MatrixBase, access_by_index_matrixColumn) {
     MatrixColumn<int, 2> m = {{0, 1}};
     int arr_test[] = {0, 1};
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*m(i), arr_test[i]);
     }
 }
@@ -40,7 +40,7 @@ TEST(MatrixBase, get_diagonal) {
     int arr_test[] = {0, 3};
 
     auto diagonal = m.getDiagonal();
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*diagonal(i), arr_test[i]);
     }
 }
@@ -50,7 +50,7 @@ TEST(MatrixBase, get_row) {
     int arr_test[] = {0, 1};
 
     auto row = m.getRow(0);
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*row(i), arr_test[i]);
     }
 }
@@ -60,7 +60,7 @@ TEST(MatrixBase, get_column) {
     int arr_test[] = {0, 2};
 
     auto column = m.getColumn(0);
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*column(i), arr_test[i]);
     }
 }
@@ -74,8 +74,8 @@ TEST(MatrixBase, retrieved_elements_do_not_change) {
     *column(0) = 100;
     *column(1) = 101;
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*m(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -88,8 +88,8 @@ TEST(MatrixBase, creating_matrix_from_numbers) {
     Matrix<int, 2, 2> m = {{0, 1, 2, 3}};
     int arr_test[] = {0, 1, 2, 3};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*m(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -109,8 +109,8 @@ TEST(MatrixBase, creating_matrix_from_vectors) {
 
     m = {{mRow1, mRow2, mRow3}, 3};
 
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 3; ++j) {
+    for (size_t i = 0; i < 3; ++i) {
+        for (size_t j = 0; j < 3; ++j) {
             EXPECT_EQ(*m(i, j), arr_test[i * 3 + j]);
         }
     }
@@ -120,7 +120,7 @@ TEST(MatrixBase, creating_vector_from_numbers) {
     MatrixRow<int, 2> m = {{0, 1, 2, 3}};
     int arr_test[] = {0, 1, 2, 3};
 
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*m(i), arr_test[i]);
     }
 }
@@ -136,8 +136,8 @@ TEST(MatrixBase, element_by_element_mult_matrix) {
     auto res = m01 * m02;
     int arr_test[] = {0, 1, 4, 9};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -150,7 +150,7 @@ TEST(MatrixBase, element_by_element_mult_vectorRow) {
     MatrixRow<float, 4> res = r01 * r02;
     int arr_test[] = {0, 1, 4, 9};
 
-    for (int i = 0; i < 4; ++i) {
+    for (size_t i = 0; i < 4; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -162,7 +162,7 @@ TEST(MatrixBase, element_by_element_mult_vectorColumn) {
     MatrixColumn<float, 4> res = c01 * c02;
     int arr_test[] = {0, 1, 4, 9};
 
-    for (int i = 0; i < 4; ++i) {
+    for (size_t i = 0; i < 4; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -174,8 +174,8 @@ TEST(MatrixBase, element_by_element_add_matrix) {
     auto res = m01 + m02;
     int arr_test[] = {0, 2, 4, 6};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -188,7 +188,7 @@ TEST(MatrixBase, element_by_element_add_vectorRow) {
     MatrixRow<float, 4> res = r01 + r02;
     int arr_test[] = {0, 2, 4, 6};
 
-    for (int i = 0; i < 4; ++i) {
+    for (size_t i = 0; i < 4; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -200,7 +200,7 @@ TEST(MatrixBase, element_by_element_add_vectorColumn) {
     MatrixColumn<float, 4> res = c01 + c02;
     int arr_test[] = {0, 2, 4, 6};
 
-    for (int i = 0; i < 4; ++i) {
+    for (size_t i = 0; i < 4; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -211,8 +211,8 @@ TEST(MatrixBase, element_by_element_sub_matrix) {
 
     auto res = m01 - m02;
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), 0);
         }
     }
@@ -224,7 +224,7 @@ TEST(MatrixBase, element_by_element_sub_vectorRow) {
 
     MatrixRow<float, 4> res = r01 - r02;
 
-    for (int i = 0; i < 4; ++i) {
+    for (size_t i = 0; i < 4; ++i) {
         EXPECT_EQ(*res(i), 0);
     }
 }
@@ -235,7 +235,7 @@ TEST(MatrixBase, element_by_element_sub_vectorColumn) {
 
     MatrixColumn<float, 4> res = c01 - c02;
 
-    for (int i = 0; i < 4; ++i) {
+    for (size_t i = 0; i < 4; ++i) {
         EXPECT_EQ(*res(i), 0);
     }
 }
@@ -250,8 +250,8 @@ TEST(MatrixBase, mult_matrix_num) {
     Matrix<int, 2, 2> res = m01 * 4;
     int arr_test[] = {0, 4, 8, 12};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -263,8 +263,8 @@ TEST(MatrixBase, mult_num_matrix) {
     Matrix<int, 2, 2> res = 4 * m01;
     int arr_test[] = {0, 4, 8, 12};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -277,7 +277,7 @@ TEST(MatrixBase, mult_row_matrix) {
     MatrixRow<float, 2> res = r01 * m01;
     int arr_test[] = {2, 3};
 
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -289,7 +289,7 @@ TEST(MatrixBase, mult_matrix_column) {
     MatrixColumn<float, 2> res = m01 * c01;
     int arr_test[] = {1, 3};
 
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -302,8 +302,8 @@ TEST(MatrixBase, mult_matrix_matrix) {
     auto res = m01.multiply(m02);
     int arr_test[] = {2, 3, 6, 11};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -319,8 +319,8 @@ TEST(MatrixBase, add_matrix_num) {
     auto res = m01 + 4;
     int arr_test[] = {4, 5, 6, 7};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -332,8 +332,8 @@ TEST(MatrixBase, add_num_matrix) {
     Matrix<int, 2, 2> res = 4 + m01;
     int arr_test[] = {4, 5, 6, 7};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -345,8 +345,8 @@ TEST(MatrixBase, sub_matrix_num) {
     auto res = m01 - 4;
     int arr_test[] = {-4, -3, -2, -1};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -358,7 +358,7 @@ TEST(MatrixBase, add_row_num) {
     MatrixRow<float, 2> res = r01 + 4;
     int arr_test[] = {4, 5};
 
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -369,7 +369,7 @@ TEST(MatrixBase, add_num_row) {
     MatrixRow<int, 2> res = 4 + r01;
     int arr_test[] = {4, 5};
 
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -380,7 +380,7 @@ TEST(MatrixBase, sub_row_num) {
     MatrixRow<float, 2> res = r01 - 4;
     int arr_test[] = {-4, -3};
 
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -391,7 +391,7 @@ TEST(MatrixBase, add_column_num) {
     MatrixColumn<float, 2> res = c01 + 4;
     int arr_test[] = {4, 5};
 
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -402,7 +402,7 @@ TEST(MatrixBase, add_column_row) {
     MatrixColumn<int, 2> res = 4 + c01;
     int arr_test[] = {4, 5};
 
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -413,7 +413,7 @@ TEST(MatrixBase, sub_column_num) {
     MatrixColumn<float, 2> res = c01 - 4;
     int arr_test[] = {-4, -3};
 
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(*res(i), arr_test[i]);
     }
 }
@@ -425,8 +425,8 @@ TEST(MatrixBase, add_matrix_row_line_by_line) {
     Matrix<float, 2, 2> res = m01 + r01;
     int arr_test[] = {0, 2, 2, 4};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -439,8 +439,8 @@ TEST(MatrixBase, add_matrix_column_line_by_line) {
     Matrix<float, 2, 2> res = m01 + c01;
     int arr_test[] = {0, 1, 3, 4};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -453,8 +453,8 @@ TEST(MatrixBase, sub_matrix_row_line_by_line) {
     Matrix<float, 2, 2> res = m01 - r01;
     int arr_test[] = {0, 0, 2, 2};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -467,8 +467,8 @@ TEST(MatrixBase, sub_matrix_column_line_by_line) {
     Matrix<float, 2, 2> res = m01 - c01;
     int arr_test[] = {0, 1, 1, 2};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -480,11 +480,11 @@ TEST(MatrixBase, sub_matrix_column_line_by_line) {
 TEST(MatrixBase, transponce_matrix) {
     Matrix<float, 2, 2> m01 = {{0, 1, 2, 3}};
 
-    auto res = m01.transposed();
+    auto res = m01.transpose();
     int arr_test[] = {0, 2, 1, 3};
 
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
+    for (size_t i = 0; i < 2; ++i) {
+        for (size_t j = 0; j < 2; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 2 + j]);
         }
     }
@@ -493,11 +493,11 @@ TEST(MatrixBase, transponce_matrix) {
 TEST(MatrixBase, inverted_matrix) {
     Matrix<float, 3, 3> m01 = {{1, 2, 3, 2, 3, 3, 2, 2, 2}};
 
-    auto res = m01.inverted();
+    auto res = m01.invert();
     float arr_test[] = {-0, -1, 1.5, -1, 2, -1.5, 1, -1, 0.5};
 
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 3; ++j) {
+    for (size_t i = 0; i < 3; ++i) {
+        for (size_t j = 0; j < 3; ++j) {
             EXPECT_EQ(*res(i, j), arr_test[i * 3 + j]);
         }
     }
@@ -510,7 +510,7 @@ TEST(MatrixBase, determinant_matrix) {
     Matrix<float, 4, 4> m01 =
             {{1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3, 1, 0, 5, 0}};
 
-    auto res = m01.determinant(4);;
+    auto res = m01.getDeterminant(4);;
 
     EXPECT_EQ(res, 30);
 }
@@ -527,7 +527,7 @@ TEST(MatrixBase, matrix_slices) {
             {{1, 0, 2, -1, 3, 0, 0, 5, 2, 1, 4, -3, 1, 0, 5, 0}};
     float arr_test[] = {1, 0};
     auto slice = m01.Slice(0, 2);
-    for (int i = 0; i < 2; ++i) {
+    for (size_t i = 0; i < 2; ++i) {
         EXPECT_EQ(slice(i), arr_test[i]);
     }
 }

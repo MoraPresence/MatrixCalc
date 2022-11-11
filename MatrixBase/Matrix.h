@@ -3,7 +3,6 @@
 #ifndef MATRIXCALC_MATRIX_H
 #define MATRIXCALC_MATRIX_H
 
-#include <cstring>
 #include <iostream>
 #include "MatrixBase.h"
 #include "MatrixColumn.h"
@@ -15,13 +14,21 @@ class Matrix : public MatrixBase<T, rowsCount, columnsCount> {
     using MatrixBase<T, rowsCount, columnsCount>::MatrixBase;
 public:
     using MatrixBase<T, rowsCount, columnsCount>::operator+=;
+
     using MatrixBase<T, rowsCount, columnsCount>::operator+;
+
     using MatrixBase<T, rowsCount, columnsCount>::operator-=;
+
     using MatrixBase<T, rowsCount, columnsCount>::operator-;
+
     using MatrixBase<T, rowsCount, columnsCount>::operator*=;
+
     using MatrixBase<T, rowsCount, columnsCount>::operator*;
+
     using MatrixBase<T, rowsCount, columnsCount>::operator=;
+
     using MatrixBase<T, rowsCount, columnsCount>::Begin;
+
     using MatrixBase<T, rowsCount, columnsCount>::End;
 
 /************************************************constructors**********************************************************/
@@ -40,8 +47,9 @@ public:
 
 
 /************************************************operators*************************************************************/
-    friend std::ostream &operator<<<T, rowsCount, columnsCount>
-            (std::ostream &, MatrixBase<T, rowsCount, columnsCount> &);
+    friend std::ostream &operator
+    <<<T, rowsCount, columnsCount>
+    (std::ostream &, MatrixBase<T, rowsCount, columnsCount> &);
 
     MatrixColumn<T, rowsCount> operator*=(MatrixColumn<T, rowsCount> &other);
 
@@ -76,27 +84,27 @@ public:
 
 
 /************************************************functions*************************************************************/
-    Matrix<T, rowsCount, columnsCount> transposed();
+    Matrix<T, rowsCount, columnsCount> transpose();
 
     MatrixColumn<T, rowsCount> multiply(MatrixColumn<T, rowsCount> &other);
 
     MatrixRow<T, columnsCount> multiply(MatrixRow<T, columnsCount> &other);
 
-    Matrix<T, rowsCount, columnsCount> addition(MatrixRow<T, columnsCount> &matrix);
+    Matrix<T, rowsCount, columnsCount> add(MatrixRow<T, columnsCount> &matrix);
 
-    Matrix<T, rowsCount, columnsCount> addition(MatrixColumn<T, columnsCount> &matrix);
+    Matrix<T, rowsCount, columnsCount> add(MatrixColumn<T, columnsCount> &matrix);
 
-    Matrix<T, rowsCount, columnsCount> subtraction(MatrixRow<T, columnsCount> &matrix);
+    Matrix<T, rowsCount, columnsCount> subtract(MatrixRow<T, columnsCount> &matrix);
 
-    Matrix<T, rowsCount, columnsCount> subtraction(MatrixColumn<T, columnsCount> &matrix);
+    Matrix<T, rowsCount, columnsCount> subtract(MatrixColumn<T, columnsCount> &matrix);
 
     MatrixSlice<T> Slice(size_t start, size_t end);
 
-    T determinant(size_t size);
+    T getDeterminant(size_t size);
 
-    Matrix adjoint();
+    Matrix getAdjoint();
 
-    Matrix inverted();
+    Matrix invert();
 
     Matrix multiply(Matrix &matrix);
 /**********************************************************************************************************************/
@@ -142,7 +150,7 @@ MatrixRow<T, columnsCount> MatrixRow<T, columnsCount>::operator*(MatrixBase<T, c
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator+=(MatrixRow<T, columnsCount> &other) {
-    return this->addition(other);
+    return this->add(other);
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
@@ -152,7 +160,7 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator+
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator-=(MatrixRow<T, columnsCount> &other) {
-    return this->subtraction(other);
+    return this->subtract(other);
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
@@ -162,7 +170,7 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator-
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator+=(MatrixColumn<T, rowsCount> &other) {
-    return this->addition(other);
+    return this->add(other);
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
@@ -172,7 +180,7 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator+
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator-=(MatrixColumn<T, rowsCount> &other) {
-    return this->subtraction(other);
+    return this->subtract(other);
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
@@ -199,7 +207,7 @@ MatrixColumn<T, rowsCount> Matrix<T, rowsCount, columnsCount>::getColumn(size_t 
     if (columnsCount <= columnNum) {
         throw std::runtime_error("No such row exists");
     }
-    auto transposed = this->transposed();
+    auto transposed = this->transpose();
     MatrixColumn<T, columnsCount> tmp;
     std::copy(transposed.Begin() + (columnNum * transposed.getRowsCount()),
               transposed.Begin() + (columnNum * transposed.getRowsCount() + transposed.getColumnsCount()),
@@ -209,12 +217,12 @@ MatrixColumn<T, rowsCount> Matrix<T, rowsCount, columnsCount>::getColumn(size_t 
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 MatrixRow<T, columnsCount> Matrix<T, rowsCount, columnsCount>::getDiagonal() {
-    uint32_t size = 0;
-    rowsCount < columnsCount ? size = rowsCount : size = columnsCount;
+    static_assert(rowsCount == columnsCount);
+
     MatrixRow<T, columnsCount> diagonal;
-    for (size_t i = 0; i < size; ++i) {
-        *diagonal(i) = *(*this)(i, i);
-    }
+
+    std::copy_if(this->Begin(), this->End(), diagonal.Begin(), [](T &i) { return i % (rowsCount + 1) == 0; });
+
     return diagonal;
 }
 /**********************************************************************************************************************/
@@ -222,7 +230,7 @@ MatrixRow<T, columnsCount> Matrix<T, rowsCount, columnsCount>::getDiagonal() {
 
 /************************************************functions*************************************************************/
 template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::transposed() {
+Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::transpose() {
     Matrix<T, columnsCount, rowsCount> transponse(*this);
     for (size_t i = 0; i < rowsCount; ++i) {
         for (size_t j = i + 1; j < columnsCount; ++j) {
@@ -268,7 +276,7 @@ MatrixRow<T, columnsCount> Matrix<T, rowsCount, columnsCount>::multiply(MatrixRo
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::addition(MatrixRow<T, columnsCount> &matrix) {
+Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::add(MatrixRow<T, columnsCount> &matrix) {
     Matrix<T, rowsCount, columnsCount> res;
     for (size_t i = 0; i < rowsCount; ++i) {
         for (size_t j = 0; j < columnsCount; ++j) {
@@ -279,7 +287,7 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::addition(
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::addition(MatrixColumn<T, columnsCount> &matrix) {
+Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::add(MatrixColumn<T, columnsCount> &matrix) {
     Matrix<T, rowsCount, columnsCount> res;
     for (size_t i = 0; i < rowsCount; ++i) {
         for (size_t j = 0; j < columnsCount; ++j) {
@@ -290,7 +298,7 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::addition(
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::subtraction(MatrixRow<T, columnsCount> &matrix) {
+Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::subtract(MatrixRow<T, columnsCount> &matrix) {
     Matrix<T, rowsCount, columnsCount> res;
     for (size_t i = 0; i < rowsCount; ++i) {
         for (size_t j = 0; j < columnsCount; ++j) {
@@ -302,7 +310,7 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::subtracti
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 Matrix<T, rowsCount, columnsCount>
-Matrix<T, rowsCount, columnsCount>::subtraction(MatrixColumn<T, columnsCount> &matrix) {
+Matrix<T, rowsCount, columnsCount>::subtract(MatrixColumn<T, columnsCount> &matrix) {
     Matrix<T, rowsCount, columnsCount> res;
     for (size_t i = 0; i < rowsCount; ++i) {
         for (size_t j = 0; j < columnsCount; ++j) {
@@ -314,7 +322,7 @@ Matrix<T, rowsCount, columnsCount>::subtraction(MatrixColumn<T, columnsCount> &m
 
 template<typename T, size_t rowsCount, size_t columnsCount>
 MatrixSlice<T> Matrix<T, rowsCount, columnsCount>::Slice(size_t start, size_t end) {
-    if (start < 0 || end > rowsCount * columnsCount)
+    if (end > rowsCount * columnsCount)
         throw std::runtime_error("Slice out of range");
 
     return MatrixSlice<T>(this->Begin() + start, start, end, this->cells.size());
@@ -339,7 +347,7 @@ void getCofactor(Matrix<T, rowsCount, columnsCount> mat, Matrix<T, rowsCount, co
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
-T Matrix<T, rowsCount, columnsCount>::determinant(size_t size) {
+T Matrix<T, rowsCount, columnsCount>::getDeterminant(size_t size) {
     if (rowsCount != columnsCount)
         throw std::runtime_error("Trying to calculate det of non-square matrix");
     if (size == 1)
@@ -350,14 +358,14 @@ T Matrix<T, rowsCount, columnsCount>::determinant(size_t size) {
     Matrix<T, rowsCount, columnsCount> sMatrix;
     for (size_t i = 0; i < size; ++i) {
         getCofactor((*this), sMatrix, 0, i, size);
-        result += std::pow(-1, 2 + i) * *(*this)(0, i)
-                  * sMatrix.determinant(size - 1);
+        result += (T) (std::pow(-1, 2 + i) * *(*this)(0, i)
+                       * sMatrix.getDeterminant(size - 1));
     }
     return result;
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::adjoint() {
+Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::getAdjoint() {
     Matrix<T, rowsCount, columnsCount> adj;
     size_t size = columnsCount;
 
@@ -370,24 +378,24 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::adjoint()
     for (size_t i = 0; i < size; ++i) {
         for (size_t j = 0; j < size; ++j) {
             getCofactor((*this), sMatrix, i, j, size);
-            *adj(j, i) = std::pow(-1, 2 + (i + j)) * (sMatrix.determinant(size - 1));
+            *adj(j, i) = (T) (std::pow(-1, 2 + (i + j)) * (sMatrix.getDeterminant(size - 1)));
         }
     }
     return adj;
 }
 
 template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::inverted() {
+Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::invert() {
     if (rowsCount != columnsCount)
         throw std::runtime_error("Trying to inverse a non-square matrix");
 
-    auto det = this->determinant(columnsCount);
+    auto det = this->getDeterminant(columnsCount);
     if (det == 0)
-        throw std::runtime_error("determinant is zero");
+        throw std::runtime_error("getDeterminant is zero");
 
     Matrix<T, rowsCount, columnsCount> inv;
 
-    auto adj = this->adjoint();
+    auto adj = this->getAdjoint();
 
     for (size_t i = 0; i < rowsCount; ++i) {
         for (size_t j = 0; j < columnsCount; j++) {

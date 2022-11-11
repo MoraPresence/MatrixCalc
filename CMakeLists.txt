@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(MatrixCalc CXX)
 
-option(BUILD_FOR_TEST "Build for test" OFF)
+option(ENABLE_TESTING "Build for test" ON)
 
 set(CMAKE_CXX_STANDARD 17)
 

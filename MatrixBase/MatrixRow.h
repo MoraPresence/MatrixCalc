@@ -10,16 +10,25 @@
 template<typename T, size_t columnsCount>
 class MatrixRow : public MatrixBase<T, ROW, columnsCount> {
     using MatrixBase<T, ROW, columnsCount>::cells;
+
     using MatrixBase<T, ROW, columnsCount>::MatrixBase;
 public:
     using MatrixBase<T, ROW, columnsCount>::operator+=;
+
     using MatrixBase<T, ROW, columnsCount>::operator+;
+
     using MatrixBase<T, ROW, columnsCount>::operator-=;
+
     using MatrixBase<T, ROW, columnsCount>::operator-;
+
     using MatrixBase<T, ROW, columnsCount>::operator*=;
+
     using MatrixBase<T, ROW, columnsCount>::operator*;
+
     using MatrixBase<T, ROW, columnsCount>::operator=;
+
     using MatrixBase<T, ROW, columnsCount>::Begin;
+
     using MatrixBase<T, ROW, columnsCount>::End;
 
     MatrixRow() : MatrixBase<T, ROW, columnsCount>() {};

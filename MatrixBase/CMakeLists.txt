@@ -5,7 +5,6 @@ if (BUILD_FOR_TEST)
     set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-fprofile-arcs -ftest-coverage -fPIC -O0")
 endif ()
 
-file(GLOB SOURCES *.h)
 file(GLOB INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(${PROJECT_NAME} INTERFACE)

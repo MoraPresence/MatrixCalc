@@ -10,16 +10,25 @@
 template<typename T, size_t rowCount>
 class MatrixColumn : public MatrixBase<T, rowCount, COLUMN> {
     using MatrixBase<T, rowCount, COLUMN>::cells;
+
     using MatrixBase<T, rowCount, COLUMN>::MatrixBase;
 public:
     using MatrixBase<T, rowCount, COLUMN>::operator+=;
+
     using MatrixBase<T, rowCount, COLUMN>::operator+;
+
     using MatrixBase<T, rowCount, COLUMN>::operator-=;
+
     using MatrixBase<T, rowCount, COLUMN>::operator-;
+
     using MatrixBase<T, rowCount, COLUMN>::operator*=;
+
     using MatrixBase<T, rowCount, COLUMN>::operator*;
+
     using MatrixBase<T, rowCount, COLUMN>::operator=;
+
     using MatrixBase<T, rowCount, COLUMN>::Begin;
+
     using MatrixBase<T, rowCount, COLUMN>::End;
 
     MatrixColumn() : MatrixBase<T, rowCount, COLUMN>() {};
