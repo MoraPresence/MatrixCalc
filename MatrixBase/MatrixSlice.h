@@ -33,10 +33,8 @@ public:
 };
 
 template<typename T>
-MatrixSlice<T>::MatrixSlice(T *elem, size_t start, size_t end, size_t size) {
-    _ptrArr = elem;
-    _len = end - start;
-    _cap = size;
+MatrixSlice<T>::MatrixSlice(T *elem, size_t start, size_t end, size_t size) : _ptrArr(elem), _len(end - start), _cap(size)
+{
 }
 
 template<typename T>

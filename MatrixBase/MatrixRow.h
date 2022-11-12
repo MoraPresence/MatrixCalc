@@ -27,9 +27,11 @@ public:
 
     using MatrixBase<T, ROW, columnsCount>::operator=;
 
-    using MatrixBase<T, ROW, columnsCount>::Begin;
+    using MatrixBase<T, ROW, columnsCount>::operator==;
 
-    using MatrixBase<T, ROW, columnsCount>::End;
+    using MatrixBase<T, ROW, columnsCount>::begin;
+
+    using MatrixBase<T, ROW, columnsCount>::end;
 
     MatrixRow() : MatrixBase<T, ROW, columnsCount>() {};
 
@@ -39,15 +41,17 @@ public:
 
     MatrixRow(const MatrixBase<T, ROW, columnsCount> &other) : MatrixBase<T, ROW, columnsCount>(other) {};
 
+    MatrixRow(const MatrixBase<T, ROW, columnsCount> &&other) : MatrixBase<T, ROW, columnsCount>(other) {};
+
     MatrixRow operator*=(MatrixBase<T, columnsCount, columnsCount> &other);
 
     MatrixRow operator*(MatrixBase<T, columnsCount, columnsCount> &other);
 
-    virtual T *operator()(size_t i);
+    constexpr T *operator()(size_t i);
 };
 
 template<typename T, size_t columnsCount>
-T *MatrixRow<T, columnsCount>::operator()(size_t i) {
+constexpr T *MatrixRow<T, columnsCount>::operator()(size_t i) {
     return MatrixBase<T, ROW, columnsCount>::operator()(0, i);
 }
 

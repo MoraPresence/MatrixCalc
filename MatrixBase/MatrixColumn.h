@@ -27,9 +27,11 @@ public:
 
     using MatrixBase<T, rowCount, COLUMN>::operator=;
 
-    using MatrixBase<T, rowCount, COLUMN>::Begin;
+    using MatrixBase<T, rowCount, COLUMN>::operator==;
 
-    using MatrixBase<T, rowCount, COLUMN>::End;
+    using MatrixBase<T, rowCount, COLUMN>::begin;
+
+    using MatrixBase<T, rowCount, COLUMN>::end;
 
     MatrixColumn() : MatrixBase<T, rowCount, COLUMN>() {};
 
@@ -37,17 +39,19 @@ public:
 
     MatrixColumn(const MatrixBase<T, rowCount, COLUMN> &other) : MatrixBase<T, rowCount, COLUMN>(other) {};
 
-    virtual T *operator()(size_t i);
+    MatrixColumn(const MatrixBase<T, rowCount, COLUMN> &&other) : MatrixBase<T, rowCount, COLUMN>(other) {};
+
+    constexpr T *operator()(size_t i);
 };
 
 template<typename T, size_t rowsCount>
-T *MatrixColumn<T, rowsCount>::operator()(size_t i) {
+constexpr T *MatrixColumn<T, rowsCount>::operator()(size_t i) {
     return MatrixBase<T, rowsCount, COLUMN>::operator()(i, 0);
 }
 
 template<typename T, size_t rowCount>
 MatrixColumn<T, rowCount> operator+=(const T &num, MatrixColumn<T, rowCount> &matrix) {
-    return matrix.operator+=(num);
+    return matrix += num;
 }
 
 template<typename T, size_t rowCount>
