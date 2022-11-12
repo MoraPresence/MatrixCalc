@@ -18,7 +18,7 @@ class MatrixSlice {
 
     T *_ptrArr;
 public:
-    MatrixSlice() = delete;
+    MatrixSlice();
 
     MatrixSlice(T *elem, size_t start, size_t end, size_t size);
 
@@ -33,7 +33,12 @@ public:
 };
 
 template<typename T>
-MatrixSlice<T>::MatrixSlice(T *elem, size_t start, size_t end, size_t size) : _ptrArr(elem), _len(end - start), _cap(size)
+MatrixSlice<T>::MatrixSlice() : _cap(0), _len(0), _ptrArr(nullptr)
+{
+}
+
+template<typename T>
+MatrixSlice<T>::MatrixSlice(T *elem, size_t start, size_t end, size_t size) : _cap(size), _len(end - start), _ptrArr(elem)
 {
 }
 
