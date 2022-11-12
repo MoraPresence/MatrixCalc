@@ -5,6 +5,7 @@
 
 class matrix_elementsTests : public testing::Test {
 protected:
+
     void SetUp() override {
         matrix = {0, 1, 2, 3, 4, 5, 6, 7, 8};
         matrixRow = {0, 1, 2};
@@ -68,7 +69,6 @@ TEST_F(matrix_elementsTests, retrieved_elements_do_not_change) {
 
     EXPECT_EQ(*matrix(0, 0), 0);
     EXPECT_EQ(*matrix(1, 0), 3);
-
 }
 
 /*****************************************************************************/
@@ -152,19 +152,22 @@ TEST_F(matrix_elementsTests, element_by_element_add_vectorColumn) {
 TEST_F(matrix_elementsTests, element_by_element_sub_matrix) {
     auto res = matrix - matrix;
 
-    EXPECT_TRUE(std::all_of(res.begin(), res.end(), [](int i) { return i == 0; }));
+    EXPECT_TRUE(std::all_of(res.begin(), res.end(),
+                            [](int i) { return i == 0; }));
 }
 
 TEST_F(matrix_elementsTests, element_by_element_sub_vectorRow) {
     MatrixRow res = matrixRow - matrixRow;
 
-    EXPECT_TRUE(std::all_of(res.begin(), res.end(), [](int i) { return i == 0; }));
+    EXPECT_TRUE(std::all_of(res.begin(),
+                            res.end(), [](int i) { return i == 0; }));
 }
 
 TEST_F(matrix_elementsTests, element_by_element_sub_vectorColumn) {
     MatrixColumn res = matrixColumn - matrixColumn;
 
-    EXPECT_TRUE(std::all_of(res.begin(), res.end(), [](int i) { return i == 0; }));
+    EXPECT_TRUE(std::all_of(res.begin(), res.end(),
+                            [](int i) { return i == 0; }));
 }
 
 /*****************************************************************************/
