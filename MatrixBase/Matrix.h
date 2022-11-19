@@ -350,7 +350,7 @@ MatrixSlice<T> Matrix<T, row_num, column_num>
 
 template<typename T, size_t row_num, size_t column_num>
 void getCofactor(const Matrix<T, row_num, column_num> &mat,
-                 Matrix<T, row_num, column_num> &temp,
+                 Matrix<T, row_num, column_num> *temp,
                  size_t rowSrc,
                  size_t columnSrc, size_t size) {
     size_t i = 0;
