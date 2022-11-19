@@ -8,7 +8,9 @@
 #include "MatrixRow.h"
 #include "MatrixSlice.h"
 
+#include <algorithm>
 #include <iostream>
+#include <utility>
 
 template<typename T, size_t row_num, size_t column_num>
 class Matrix : public MatrixBase<T, row_num, column_num> {
@@ -27,12 +29,13 @@ class Matrix : public MatrixBase<T, row_num, column_num> {
     using MatrixBase<T, row_num, column_num>::begin;
     using MatrixBase<T, row_num, column_num>::end;
 
-    Matrix() : MatrixBase<T, row_num, column_num>(){}
-    Matrix(const Matrix &other) : MatrixBase<T, row_num, column_num>(other){}
+    Matrix() : MatrixBase<T, row_num, column_num>() {}
+    Matrix(const Matrix &other)
+        : MatrixBase<T, row_num, column_num>(other) {}
     explicit Matrix(const MatrixBase<T, row_num, column_num> &other)
-        : MatrixBase<T, row_num, column_num>(other){}
+        : MatrixBase<T, row_num, column_num>(other) {}
     explicit Matrix(const MatrixBase<T, row_num, column_num> &&other)
-        : MatrixBase<T, row_num, column_num>(other){}
+        : MatrixBase<T, row_num, column_num>(other) {}
     Matrix(std::initializer_list<MatrixRow<T, column_num>> list);
     ~Matrix();
 
@@ -164,7 +167,7 @@ constexpr Matrix<T, row_num, column_num> &
 Matrix<T, row_num, column_num>::operator=
         (const std::initializer_list<MatrixRow<T, column_num>> list) {
     size_t i = 0;
-    for (MatrixRow<T, column_num> row: list) {
+    for (MatrixRow<T, column_num> row : list) {
         std::copy(row.begin(), row.end(), this->begin() + row_num * i);
         ++i;
     }
@@ -284,7 +287,8 @@ MatrixColumn<T, row_num> Matrix<T, row_num, column_num>
 }
 
 template<typename T, size_t row_num, size_t column_num>
-MatrixRow<T, column_num> Matrix<T, row_num, column_num>::multiply(const MatrixRow<T, column_num> &other) {
+MatrixRow<T, column_num> Matrix<T, row_num, column_num>
+        ::multiply(const MatrixRow<T, column_num> &other) {
     MatrixRow<T, column_num> res;
     double_loop_(0, 0, row_num, column_num,
                  [&](size_t i, size_t j)
@@ -293,7 +297,8 @@ MatrixRow<T, column_num> Matrix<T, row_num, column_num>::multiply(const MatrixRo
 }
 
 template<typename T, size_t row_num, size_t column_num>
-Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(const MatrixRow<T, column_num> &other) {
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>
+        ::add(const MatrixRow<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
     double_loop_(0, 0, row_num, column_num,
                  [&](size_t i, size_t j)
@@ -302,7 +307,8 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(const MatrixR
 }
 
 template<typename T, size_t row_num, size_t column_num>
-Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(const MatrixColumn<T, column_num> &other) {
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>
+        ::add(const MatrixColumn<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
     double_loop_(0, 0, row_num, column_num,
                  [&](size_t i, size_t j)
@@ -311,7 +317,8 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(const MatrixC
 }
 
 template<typename T, size_t row_num, size_t column_num>
-Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::subtract(const MatrixRow<T, column_num> &other) {
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>
+        ::subtract(const MatrixRow<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
     double_loop_(0, 0, row_num, column_num,
                  [&](size_t i, size_t j)
@@ -321,7 +328,8 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::subtract(const Ma
 
 template<typename T, size_t row_num, size_t column_num>
 Matrix<T, row_num, column_num>
-Matrix<T, row_num, column_num>::subtract(const MatrixColumn<T, column_num> &other) {
+Matrix<T, row_num, column_num>
+        ::subtract(const MatrixColumn<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
     double_loop_(0, 0, row_num, column_num,
                  [&](size_t i, size_t j)
@@ -341,7 +349,7 @@ MatrixSlice<T> Matrix<T, row_num, column_num>
 }
 
 template<typename T, size_t row_num, size_t column_num>
-void getCofactor(Matrix<T, row_num, column_num> mat,
+void getCofactor(const Matrix<T, row_num, column_num> &mat,
                  Matrix<T, row_num, column_num> &temp,
                  size_t rowSrc,
                  size_t columnSrc, size_t size) {
