@@ -5,58 +5,46 @@
 
 #include "MatrixBase.h"
 
-#define COLUMN 1
+template<typename T, size_t row_num>
+class MatrixColumn : public MatrixBase<T, row_num, 1> {
+    using MatrixBase<T, row_num, 1>::cells;
+    using MatrixBase<T, row_num, 1>::MatrixBase;
 
-template<typename T, size_t rowCount>
-class MatrixColumn : public MatrixBase<T, rowCount, COLUMN> {
-    using MatrixBase<T, rowCount, COLUMN>::cells;
-
-    using MatrixBase<T, rowCount, COLUMN>::MatrixBase;
 public:
-    using MatrixBase<T, rowCount, COLUMN>::operator+=;
+    using MatrixBase<T, row_num, 1>::operator+=;
+    using MatrixBase<T, row_num, 1>::operator+;
+    using MatrixBase<T, row_num, 1>::operator-=;
+    using MatrixBase<T, row_num, 1>::operator-;
+    using MatrixBase<T, row_num, 1>::operator*=;
+    using MatrixBase<T, row_num, 1>::operator*;
+    using MatrixBase<T, row_num, 1>::operator=;
+    using MatrixBase<T, row_num, 1>::operator==;
+    using MatrixBase<T, row_num, 1>::begin;
+    using MatrixBase<T, row_num, 1>::end;
 
-    using MatrixBase<T, rowCount, COLUMN>::operator+;
-
-    using MatrixBase<T, rowCount, COLUMN>::operator-=;
-
-    using MatrixBase<T, rowCount, COLUMN>::operator-;
-
-    using MatrixBase<T, rowCount, COLUMN>::operator*=;
-
-    using MatrixBase<T, rowCount, COLUMN>::operator*;
-
-    using MatrixBase<T, rowCount, COLUMN>::operator=;
-
-    using MatrixBase<T, rowCount, COLUMN>::operator==;
-
-    using MatrixBase<T, rowCount, COLUMN>::begin;
-
-    using MatrixBase<T, rowCount, COLUMN>::end;
-
-    MatrixColumn() : MatrixBase<T, rowCount, COLUMN>() {};
-
-    MatrixColumn(const MatrixColumn &other) : MatrixBase<T, rowCount, COLUMN>(other) {};
-
-    MatrixColumn(const MatrixBase<T, rowCount, COLUMN> &other) : MatrixBase<T, rowCount, COLUMN>(other) {};
-
-    MatrixColumn(const MatrixBase<T, rowCount, COLUMN> &&other) : MatrixBase<T, rowCount, COLUMN>(other) {};
+    MatrixColumn() : MatrixBase<T, row_num, 1>(){};
+    MatrixColumn(const MatrixColumn &other) : MatrixBase<T, row_num, 1>(other){};
+    MatrixColumn(const MatrixBase<T, row_num, 1> &other) : MatrixBase<T, row_num, 1>(other){};
+    MatrixColumn(const MatrixBase<T, row_num, 1> &&other) : MatrixBase<T, row_num, 1>(other){};
 
     constexpr T *operator()(size_t i);
 };
 
-template<typename T, size_t rowsCount>
-constexpr T *MatrixColumn<T, rowsCount>::operator()(size_t i) {
-    return MatrixBase<T, rowsCount, COLUMN>::operator()(i, 0);
+template<typename T, size_t row_num>
+constexpr T *MatrixColumn<T, row_num>::operator()(size_t i) {
+    return MatrixBase<T, row_num, 1>::operator()(i, 0);
 }
 
-template<typename T, size_t rowCount>
-MatrixColumn<T, rowCount> operator+=(const T &num, MatrixColumn<T, rowCount> &matrix) {
+template<typename T, size_t row_num>
+MatrixColumn<T, row_num>
+        operator+=(const T &num, MatrixColumn<T, row_num> &matrix) {
     return matrix += num;
 }
 
-template<typename T, size_t rowCount>
-MatrixColumn<T, rowCount> operator+(const T &num, MatrixColumn<T, rowCount> &matrix) {
+template<typename T, size_t row_num>
+MatrixColumn<T, row_num>
+        operator+(const T &num, MatrixColumn<T, row_num> &matrix) {
     return operator+=(num, matrix);
 }
 
-#endif //MATRIXCALC_MATRIXCOLUMN_H
+#endif//MATRIXCALC_MATRIXCOLUMN_H

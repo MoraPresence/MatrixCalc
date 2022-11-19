@@ -9,246 +9,212 @@
 #include <cmath>
 #include <iostream>
 
-template<typename T, size_t rowsCount, size_t columnsCount>
+template<typename T, size_t row_num, size_t column_num>
 class MatrixBase;
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-void swap(MatrixBase<T, rowsCount, columnsCount> &first, MatrixBase<T, rowsCount, columnsCount> &second);
+template<typename T, size_t row_num, size_t column_num>
+void swap(MatrixBase<T, row_num, column_num> &first, MatrixBase<T, row_num, column_num> &second);
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-std::ostream &operator<<(std::ostream &, MatrixBase<T, rowsCount, columnsCount> &);
+template<typename T, size_t row_num, size_t column_num>
+std::ostream &operator<<(std::ostream &, MatrixBase<T, row_num, column_num> &);
 
-template<typename T, size_t rowsCount, size_t columnsCount>
+template<typename T, size_t row_num, size_t column_num>
 class MatrixBase {
 protected:
-    std::array<T, rowsCount * columnsCount> cells = {0};
+    std::array<T, row_num *column_num> cells = {0};
+
 public:
-/************************************************constructors**********************************************************/
     MatrixBase() = default;
-
     MatrixBase(const MatrixBase &other);
-
     MatrixBase(MatrixBase &&other) noexcept;
-
     MatrixBase(std::initializer_list<T> list);
-
-    MatrixBase(std::array<T, columnsCount> &arr);
-
+    explicit MatrixBase(std::array<T, column_num> &arr);
     ~MatrixBase();
-/**********************************************************************************************************************/
 
-
-/************************************************operators*************************************************************/
     constexpr MatrixBase &operator=(MatrixBase const &other);
-
     constexpr MatrixBase &operator=(MatrixBase &&other) noexcept;
-
     constexpr MatrixBase &operator=(std::initializer_list<T> list);
-
     constexpr MatrixBase operator+(MatrixBase &other);
-
     constexpr MatrixBase &operator+=(MatrixBase &other);
-
     constexpr MatrixBase operator-(MatrixBase &other);
-
     constexpr MatrixBase &operator-=(MatrixBase &other);
-
     virtual MatrixBase operator*(MatrixBase &other);
-
     virtual MatrixBase &operator*=(MatrixBase &other);
-
     constexpr MatrixBase &operator*=(const T &num);
-
     constexpr MatrixBase operator*(const T &num);
-
     constexpr MatrixBase &operator+=(const T &num);
-
     constexpr MatrixBase operator+(const T &num);
-
     constexpr MatrixBase &operator-=(const T &num);
-
     constexpr MatrixBase operator-(const T &num);
-
     constexpr T *operator()(size_t i, size_t j);
-
     bool operator==(MatrixBase &other);
+    bool operator==(std::array<T, row_num * column_num> &arr);
 
-    bool operator==(std::array<T, rowsCount * columnsCount> &arr);
-/**********************************************************************************************************************/
-
-
-/************************************************getters***************************************************************/
-    [[nodiscard]] size_t getRowsCount() const;
-
-    [[nodiscard]] size_t getColumnsCount() const;
-
-    typename std::array<T, rowsCount * columnsCount>::iterator begin();
-
-    typename std::array<T, rowsCount * columnsCount>::iterator end();
-/**********************************************************************************************************************/
-
-
-/************************************************friends***************************************************************/
-    friend std::ostream &operator << <>(std::ostream &, MatrixBase<T, rowsCount, columnsCount> &);
-
-    friend void swap<T, rowsCount, columnsCount>
-            (MatrixBase<T, rowsCount, columnsCount> &first, MatrixBase<T, rowsCount, columnsCount> &second);
-/**********************************************************************************************************************/
+    typename std::array<T, row_num * column_num>::iterator begin();
+    typename std::array<T, row_num * column_num>::iterator end();
+    friend std::ostream &operator<< <>(std::ostream &, MatrixBase<T, row_num, column_num> &);
+    friend void swap<T, row_num, column_num>
+            (MatrixBase<T, row_num, column_num> &first, MatrixBase<T, row_num, column_num> &second);
 };
 
-
-/************************************************constructors**********************************************************/
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount>::MatrixBase(std::initializer_list<T> list) {
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num>::MatrixBase(std::initializer_list<T> list) {
     std::copy(list.begin(), list.end(), cells.begin());
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount>::MatrixBase(const MatrixBase &other) {
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num>::MatrixBase(const MatrixBase &other) {
     std::copy(other.cells.begin(), other.cells.end(), cells.begin());
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount>::MatrixBase(MatrixBase &&other) noexcept : cells(other.cells) {
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num>::MatrixBase(MatrixBase &&other) noexcept : cells(other.cells) {
     delete other;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount>::MatrixBase(std::array<T, columnsCount> &arr) {
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num>::MatrixBase(std::array<T, column_num> &arr) {
     std::copy(arr.begin(), arr.end(), cells.begin());
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount>::~MatrixBase() = default;
-/**********************************************************************************************************************/
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num>::~MatrixBase() = default;
 
-
-/************************************************operators*************************************************************/
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> &
-MatrixBase<T, rowsCount, columnsCount>::operator=(MatrixBase const &other) {
-    MatrixBase<T, rowsCount, columnsCount> tmp(other);
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num> &
+MatrixBase<T, row_num, column_num>::operator=(MatrixBase const &other) {
+    MatrixBase<T, row_num, column_num> tmp(other);
     swap(*this, tmp);
     return *this;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> &
-MatrixBase<T, rowsCount, columnsCount>::operator=(MatrixBase &&other) noexcept {
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num> &
+MatrixBase<T, row_num, column_num>::operator=(MatrixBase &&other) noexcept {
     swap(*this, other);
     delete other;
     return *this;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> &
-MatrixBase<T, rowsCount, columnsCount>::operator=(std::initializer_list<T> list) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num> &
+MatrixBase<T, row_num, column_num>::operator=(std::initializer_list<T> list) {
     std::copy(list.begin(), list.end(), cells.begin());
     return *this;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> MatrixBase<T, rowsCount, columnsCount>::operator+(MatrixBase &other) {
-    return MatrixBase<T, rowsCount, columnsCount>(*this) += other;
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num>
+        MatrixBase<T, row_num, column_num>::operator+(MatrixBase &other) {
+    return MatrixBase<T, row_num, column_num>(*this) += other;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> &
-MatrixBase<T, rowsCount, columnsCount>::operator+=(MatrixBase &other) {
-    std::transform(this->begin(), this->end(), other.begin(), this->begin(), std::plus<>{});
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num> &
+MatrixBase<T, row_num, column_num>::operator+=(MatrixBase &other) {
+    std::transform(begin(), end(), other.begin(), begin(), std::plus<>{});
     return *this;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> MatrixBase<T, rowsCount, columnsCount>::operator-(MatrixBase &other) {
-    return MatrixBase<T, rowsCount, columnsCount>(*this) -= other;
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num>
+        MatrixBase<T, row_num, column_num>::operator-(MatrixBase &other) {
+    return MatrixBase<T, row_num, column_num>(*this) -= other;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> &
-MatrixBase<T, rowsCount, columnsCount>::operator-=(MatrixBase &other) {
-    std::transform(this->begin(), this->end(), other.begin(), this->begin(), std::minus<>{});
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num> &
+MatrixBase<T, row_num, column_num>::operator-=(MatrixBase &other) {
+    std::transform(begin(), end(), other.begin(), begin(), std::minus<>{});
     return *this;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount> &
-MatrixBase<T, rowsCount, columnsCount>::operator*=(MatrixBase &other) {
-    std::transform(this->begin(), this->end(), other.begin(), this->begin(), std::multiplies<>{});
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num> &
+MatrixBase<T, row_num, column_num>::operator*=(MatrixBase &other) {
+    std::transform(begin(), end(), other.begin(), begin(), std::multiplies<>{});
     return *this;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount> MatrixBase<T, rowsCount, columnsCount>::operator*(MatrixBase &other) {
-    return MatrixBase<T, rowsCount, columnsCount>(*this) *= other;
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num>
+        MatrixBase<T, row_num, column_num>::operator*(MatrixBase &other) {
+    return MatrixBase<T, row_num, column_num>(*this) *= other;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr T *MatrixBase<T, rowsCount, columnsCount>::operator()(size_t i, size_t j) {
-    return cells.begin() + (i * columnsCount + j);
+template<typename T, size_t row_num, size_t column_num>
+constexpr T *MatrixBase<T, row_num, column_num>::operator()(size_t i, size_t j) {
+    return cells.begin() + (i * column_num + j);
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> &MatrixBase<T, rowsCount, columnsCount>::operator*=(const T &num) {
-    std::transform(this->begin(), this->end(), this->begin(), [&num](T &i) { return i *= num; });
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num>
+        &MatrixBase<T, row_num, column_num>::operator*=(const T &num) {
+    std::transform(begin(), end(), begin(), [&num](T &i) { return i *= num; });
     return *this;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> MatrixBase<T, rowsCount, columnsCount>::operator*(const T &num) {
-    return MatrixBase<T, rowsCount, columnsCount>(*this) *= num;
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num>
+        MatrixBase<T, row_num, column_num>::operator*(const T &num) {
+    return MatrixBase<T, row_num, column_num>(*this) *= num;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount> operator*=(const T &num, MatrixBase<T, rowsCount, columnsCount> &matrix) {
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num>
+        operator*=(const T &num, MatrixBase<T, row_num, column_num> &matrix) {
     return matrix *= num;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount> operator*(const T &num, MatrixBase<T, rowsCount, columnsCount> &matrix) {
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num>
+        operator*(const T &num, MatrixBase<T, row_num, column_num> &matrix) {
     return operator*=(num, matrix);
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> &MatrixBase<T, rowsCount, columnsCount>::operator+=(const T &num) {
-    std::transform(this->begin(), this->end(), this->begin(), [&num](T &i) { return i += num; });
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num>
+        &MatrixBase<T, row_num, column_num>::operator+=(const T &num) {
+    std::transform(begin(), end(), begin(), [&num](T &i) { return i += num; });
     return *this;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> MatrixBase<T, rowsCount, columnsCount>::operator+(const T &num) {
-    return MatrixBase<T, rowsCount, columnsCount>(*this) += num;
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num>
+        MatrixBase<T, row_num, column_num>::operator+(const T &num) {
+    return MatrixBase<T, row_num, column_num>(*this) += num;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount> operator+=(const T &num, MatrixBase<T, rowsCount, columnsCount> &matrix) {
-    return matrix.operator+=(num);
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num>
+        operator+=(const T &num, MatrixBase<T, row_num, column_num> &matrix) {
+    return matrix += num;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixBase<T, rowsCount, columnsCount> operator+(const T &num, MatrixBase<T, rowsCount, columnsCount> &matrix) {
+template<typename T, size_t row_num, size_t column_num>
+MatrixBase<T, row_num, column_num>
+        operator+(const T &num, MatrixBase<T, row_num, column_num> &matrix) {
     return operator+=(num, matrix);
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> &MatrixBase<T, rowsCount, columnsCount>::operator-=(const T &num) {
-    std::transform(this->begin(), this->end(), this->begin(), [&num](T &i) { return i -= num; });
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num>
+        &MatrixBase<T, row_num, column_num>::operator-=(const T &num) {
+    std::transform(begin(), end(), begin(), [&num](T &i) { return i -= num; });
     return *this;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixBase<T, rowsCount, columnsCount> MatrixBase<T, rowsCount, columnsCount>::operator-(const T &num) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixBase<T, row_num, column_num>
+        MatrixBase<T, row_num, column_num>::operator-(const T &num) {
     return *this -= num;
 }
-/**********************************************************************************************************************/
 
-
-/************************************************friends***************************************************************/
-template<typename T, size_t rowsCount, size_t columnsCount>
-std::ostream &operator<<(std::ostream &out, MatrixBase<T, rowsCount, columnsCount> &matrix) {
-    for (size_t i = 0; i < rowsCount; ++i) {
+template<typename T, size_t row_num, size_t column_num>
+std::ostream &operator<<(std::ostream &out, MatrixBase<T, row_num, column_num> &matrix) {
+    for (size_t i = 0; i < row_num; ++i) {
         out << "{ ";
-        for (size_t j = 0; j < columnsCount; ++j) {
+        for (size_t j = 0; j < column_num; ++j) {
             out << *matrix(i, j) << " ";
         }
         out << "}\n";
@@ -256,40 +222,34 @@ std::ostream &operator<<(std::ostream &out, MatrixBase<T, rowsCount, columnsCoun
     return out;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-void swap(MatrixBase<T, rowsCount, columnsCount> &first, MatrixBase<T, rowsCount, columnsCount> &second) {
+template<typename T, size_t row_num, size_t column_num>
+void swap(MatrixBase<T, row_num, column_num> &first,
+          MatrixBase<T, row_num, column_num> &second) {
     first.cells.swap(second.cells);
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-size_t MatrixBase<T, rowsCount, columnsCount>::getRowsCount() const {
-    return rowsCount;
-}
-
-template<typename T, size_t rowsCount, size_t columnsCount>
-size_t MatrixBase<T, rowsCount, columnsCount>::getColumnsCount() const {
-    return columnsCount;
-}
-
-template<typename T, size_t rowsCount, size_t columnsCount>
-typename std::array<T, rowsCount * columnsCount>::iterator MatrixBase<T, rowsCount, columnsCount>::begin() {
+template<typename T, size_t row_num, size_t column_num>
+typename std::array<T, row_num * column_num>
+        ::iterator MatrixBase<T, row_num, column_num>::begin() {
     return cells.begin();
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-typename std::array<T, rowsCount * columnsCount>::iterator MatrixBase<T, rowsCount, columnsCount>::end() {
+template<typename T, size_t row_num, size_t column_num>
+typename std::array<T, row_num * column_num>
+        ::iterator MatrixBase<T, row_num, column_num>::end() {
     return cells.end();
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-bool MatrixBase<T, rowsCount, columnsCount>::operator==(MatrixBase &other) {
-    return this->cells == other.cells;
+template<typename T, size_t row_num, size_t column_num>
+bool MatrixBase<T, row_num, column_num>
+        ::operator==(MatrixBase &other) {
+    return cells == other.cells;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-bool MatrixBase<T, rowsCount, columnsCount>::operator==(std::array<T, rowsCount * columnsCount> &arr) {
-    return this->cells == arr;
+template<typename T, size_t row_num, size_t column_num>
+bool MatrixBase<T, row_num, column_num>
+        ::operator==(std::array<T, row_num * column_num> &arr) {
+    return cells == arr;
 }
-/**********************************************************************************************************************/
 
-#endif //MATRIXCALC_MATRIXBASE_H
+#endif//MATRIXCALC_MATRIXBASE_H

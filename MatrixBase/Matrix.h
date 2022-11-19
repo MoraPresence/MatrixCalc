@@ -10,263 +10,202 @@
 
 #include <iostream>
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-class Matrix : public MatrixBase<T, rowsCount, columnsCount> {
+template<typename T, size_t row_num, size_t column_num>
+class Matrix : public MatrixBase<T, row_num, column_num> {
 private:
-    using MatrixBase<T, rowsCount, columnsCount>::MatrixBase;
+    using MatrixBase<T, row_num, column_num>::MatrixBase;
 
 public:
-    using MatrixBase<T, rowsCount, columnsCount>::operator+=;
+    using MatrixBase<T, row_num, column_num>::operator+=;
+    using MatrixBase<T, row_num, column_num>::operator+;
+    using MatrixBase<T, row_num, column_num>::operator-=;
+    using MatrixBase<T, row_num, column_num>::operator-;
+    using MatrixBase<T, row_num, column_num>::operator*=;
+    using MatrixBase<T, row_num, column_num>::operator*;
+    using MatrixBase<T, row_num, column_num>::operator=;
+    using MatrixBase<T, row_num, column_num>::operator==;
+    using MatrixBase<T, row_num, column_num>::begin;
+    using MatrixBase<T, row_num, column_num>::end;
 
-    using MatrixBase<T, rowsCount, columnsCount>::operator+;
-
-    using MatrixBase<T, rowsCount, columnsCount>::operator-=;
-
-    using MatrixBase<T, rowsCount, columnsCount>::operator-;
-
-    using MatrixBase<T, rowsCount, columnsCount>::operator*=;
-
-    using MatrixBase<T, rowsCount, columnsCount>::operator*;
-
-    using MatrixBase<T, rowsCount, columnsCount>::operator=;
-
-    using MatrixBase<T, rowsCount, columnsCount>::operator==;
-
-    using MatrixBase<T, rowsCount, columnsCount>::begin;
-
-    using MatrixBase<T, rowsCount, columnsCount>::end;
-
-/************************************************constructors**********************************************************/
-    Matrix() : MatrixBase<T, rowsCount, columnsCount>() {};
-
-    Matrix(const Matrix &other) : MatrixBase<T, rowsCount, columnsCount>(other) {};
-
-    Matrix(const MatrixBase<T, rowsCount, columnsCount> &other) : MatrixBase<T, rowsCount, columnsCount>(
-            other) {};
-
-    Matrix(const MatrixBase<T, rowsCount, columnsCount> &&other) : MatrixBase<T, rowsCount, columnsCount>(
-            other) {};
-
-    Matrix(std::initializer_list<MatrixRow<T, columnsCount>> list);
-
+    Matrix() : MatrixBase<T, row_num, column_num>(){};
+    Matrix(const Matrix &other) : MatrixBase<T, row_num, column_num>(other){};
+    Matrix(const MatrixBase<T, row_num, column_num> &other) : MatrixBase<T, row_num, column_num>(
+                                                                          other){};
+    Matrix(const MatrixBase<T, row_num, column_num> &&other)
+        : MatrixBase<T, row_num, column_num>(other){};
+    Matrix(std::initializer_list<MatrixRow<T, column_num>> list);
     ~Matrix();
 
-/**********************************************************************************************************************/
+
+    friend std::ostream &operator<< <T, row_num, column_num>(std::ostream &, MatrixBase<T, row_num, column_num> &);
+    constexpr MatrixColumn<T, row_num> operator*=(MatrixColumn<T, row_num> &other);
+    constexpr MatrixColumn<T, row_num> operator*(MatrixColumn<T, row_num> &other);
+    constexpr Matrix operator+=(MatrixRow<T, column_num> &other);
+    constexpr Matrix operator+(MatrixRow<T, column_num> &other);
+    constexpr Matrix operator-=(MatrixRow<T, column_num> &other);
+    constexpr Matrix operator-(MatrixRow<T, column_num> &other);
+    constexpr Matrix operator+=(MatrixColumn<T, row_num> &other);
+    constexpr Matrix operator+(MatrixColumn<T, row_num> &other);
+    constexpr Matrix operator-=(MatrixColumn<T, row_num> &other);
+    constexpr Matrix operator-(MatrixColumn<T, row_num> &other);
+    constexpr Matrix &operator=(std::initializer_list<MatrixRow<T, column_num>> list);
 
 
-/************************************************operators*************************************************************/
-    friend std::ostream &operator<<<T, rowsCount, columnsCount>
-            (std::ostream &, MatrixBase<T, rowsCount, columnsCount> &);
-
-    constexpr MatrixColumn<T, rowsCount> operator*=(MatrixColumn<T, rowsCount> &other);
-
-    constexpr MatrixColumn<T, rowsCount> operator*(MatrixColumn<T, rowsCount> &other);
-
-    constexpr Matrix operator+=(MatrixRow<T, columnsCount> &other);
-
-    constexpr Matrix operator+(MatrixRow<T, columnsCount> &other);
-
-    constexpr Matrix operator-=(MatrixRow<T, columnsCount> &other);
-
-    constexpr Matrix operator-(MatrixRow<T, columnsCount> &other);
-
-    constexpr Matrix operator+=(MatrixColumn<T, rowsCount> &other);
-
-    constexpr Matrix operator+(MatrixColumn<T, rowsCount> &other);
-
-    constexpr Matrix operator-=(MatrixColumn<T, rowsCount> &other);
-
-    constexpr Matrix operator-(MatrixColumn<T, rowsCount> &other);
-
-    constexpr Matrix &operator=(std::initializer_list<MatrixRow<T, columnsCount>> list);
-
-/**********************************************************************************************************************/
-
-
-/************************************************getters***************************************************************/
-    MatrixRow<T, columnsCount> getRow(size_t rowNum);
-
-    MatrixColumn<T, rowsCount> getColumn(size_t columnNum);
-
-    MatrixRow<T, columnsCount> getDiagonal();
-
-/**********************************************************************************************************************/
-
-
-    Matrix<T, rowsCount, columnsCount> transpose();
-
-    MatrixColumn<T, rowsCount> multiply(MatrixColumn<T, rowsCount> &other);
-
-    MatrixRow<T, columnsCount> multiply(MatrixRow<T, columnsCount> &other);
-
-    Matrix<T, rowsCount, columnsCount> add(MatrixRow<T, columnsCount> &other);
-
-    Matrix<T, rowsCount, columnsCount> add(MatrixColumn<T, columnsCount> &other);
-
-    Matrix<T, rowsCount, columnsCount> subtract(MatrixRow<T, columnsCount> &other);
-
-    Matrix<T, rowsCount, columnsCount> subtract(MatrixColumn<T, columnsCount> &other);
-
+    MatrixRow<T, column_num> getRow(size_t rowNum);
+    MatrixColumn<T, row_num> getColumn(size_t columnNum);
+    MatrixRow<T, column_num> getDiagonal();
+    Matrix<T, row_num, column_num> transpose();
+    MatrixColumn<T, row_num> multiply(MatrixColumn<T, row_num> &other);
+    MatrixRow<T, column_num> multiply(MatrixRow<T, column_num> &other);
+    Matrix<T, row_num, column_num> add(MatrixRow<T, column_num> &other);
+    Matrix<T, row_num, column_num> add(MatrixColumn<T, column_num> &other);
+    Matrix<T, row_num, column_num> subtract(MatrixRow<T, column_num> &other);
+    Matrix<T, row_num, column_num> subtract(MatrixColumn<T, column_num> &other);
     MatrixSlice<T> slice(size_t start, size_t stop);
-
     T getDeterminant(size_t size);
-
     Matrix getAdjoint();
-
     Matrix invert();
-
     Matrix multiply(Matrix &other);
 };
 
 
-/************************************************constructors**********************************************************/
-template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount>::Matrix(std::initializer_list<MatrixRow<T, columnsCount>> list) {
+template<typename T, size_t row_num, size_t column_num>
+Matrix<T, row_num, column_num>::Matrix(std::initializer_list<MatrixRow<T, column_num>> list) {
     *this = list;
 }
 
-template<typename T, size_t rows, size_t columns>
-Matrix<T, rows, columns>::~Matrix() = default;
+template<typename T, size_t row_num, size_t column_num>
+Matrix<T, row_num, column_num>::~Matrix() = default;
 
-/**********************************************************************************************************************/
-
-
-/************************************************operators*************************************************************/
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixColumn<T, rowsCount> Matrix<T, rowsCount, columnsCount>::operator*=(MatrixColumn<T, rowsCount> &other) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::operator*=(MatrixColumn<T, row_num> &other) {
     return multiply(other);
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr MatrixColumn<T, rowsCount> Matrix<T, rowsCount, columnsCount>::operator*(MatrixColumn<T, rowsCount> &other) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::operator*(MatrixColumn<T, row_num> &other) {
     return *this *= other;
 }
 
-template<typename T, size_t columnsCount>
-MatrixRow<T, columnsCount> MatrixRow<T, columnsCount>::operator*=(MatrixBase<T, columnsCount, columnsCount> &other) {
-    return Matrix<T, columnsCount, columnsCount>(other).multiply(*this);
+template<typename T, size_t column_num>
+MatrixRow<T, column_num> MatrixRow<T, column_num>::operator*=(MatrixBase<T, column_num, column_num> &other) {
+    return Matrix<T, column_num, column_num>(other).multiply(*this);
 }
 
-template<typename T, size_t columnsCount>
-MatrixRow<T, columnsCount> MatrixRow<T, columnsCount>::operator*(MatrixBase<T, columnsCount, columnsCount> &other) {
+template<typename T, size_t column_num>
+MatrixRow<T, column_num> MatrixRow<T, column_num>::operator*(MatrixBase<T, column_num, column_num> &other) {
     return *this *= other;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator+=(MatrixRow<T, columnsCount> &other) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+=(MatrixRow<T, column_num> &other) {
     return add(other);
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator+(MatrixRow<T, columnsCount> &other) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+(MatrixRow<T, column_num> &other) {
     return *this += other;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator-=(MatrixRow<T, columnsCount> &other) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-=(MatrixRow<T, column_num> &other) {
     return subtract(other);
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator-(MatrixRow<T, columnsCount> &other) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-(MatrixRow<T, column_num> &other) {
     return *this -= other;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator+=(MatrixColumn<T, rowsCount> &other) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+=(MatrixColumn<T, row_num> &other) {
     return add(other);
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator+(MatrixColumn<T, rowsCount> &other) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+(MatrixColumn<T, row_num> &other) {
     return *this += other;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator-=(MatrixColumn<T, rowsCount> &other) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-=(MatrixColumn<T, row_num> &other) {
     return subtract(other);
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::operator-(MatrixColumn<T, rowsCount> &other) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-(MatrixColumn<T, row_num> &other) {
     return *this -= other;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-constexpr Matrix<T, rowsCount, columnsCount> &
-Matrix<T, rowsCount, columnsCount>::operator=(std::initializer_list<MatrixRow<T, columnsCount>> list) {
+template<typename T, size_t row_num, size_t column_num>
+constexpr Matrix<T, row_num, column_num> &
+Matrix<T, row_num, column_num>::operator=(std::initializer_list<MatrixRow<T, column_num>> list) {
     size_t i = 0;
-    for (MatrixRow<T, columnsCount> row: list) {
-        std::copy(row.begin(), row.end(), this->begin() + rowsCount * i);
+    for (MatrixRow<T, column_num> row: list) {
+        std::copy(row.begin(), row.end(), this->begin() + row_num * i);
         ++i;
     }
     return *this;
 }
-/**********************************************************************************************************************/
 
+template<typename T, size_t row_num, size_t column_num>
+MatrixRow<T, column_num> Matrix<T, row_num, column_num>::getRow(const size_t rowNum) {
+    MatrixRow<T, column_num> tmp;
 
-/************************************************getters***************************************************************/
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixRow<T, columnsCount> Matrix<T, rowsCount, columnsCount>::getRow(const size_t rowNum) {
-    MatrixRow<T, columnsCount> tmp;
-
-    if (rowsCount > rowNum) {
-        std::copy(this->begin() + (rowNum * rowsCount), this->begin() + (rowNum * rowsCount + columnsCount),
+    if (row_num > rowNum) {
+        std::copy(this->begin() + (rowNum * row_num), this->begin() + (rowNum * row_num + column_num),
                   tmp.begin());
     }
 
     return tmp;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixColumn<T, rowsCount> Matrix<T, rowsCount, columnsCount>::getColumn(const size_t columnNum) {
-    MatrixColumn<T, columnsCount> tmp;
+template<typename T, size_t row_num, size_t column_num>
+MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::getColumn(const size_t columnNum) {
+    MatrixColumn<T, column_num> tmp;
 
-    if (columnsCount > columnNum) {
+    if (column_num > columnNum) {
         auto transposed = this->transpose();
 
-        std::copy(transposed.begin() + (columnNum * transposed.getRowsCount()),
-                  transposed.begin() + (columnNum * transposed.getRowsCount() + transposed.getColumnsCount()),
+        std::copy(transposed.begin() + (columnNum * row_num),
+                  transposed.begin() + (columnNum * row_num + column_num),
                   tmp.begin());
     }
 
     return tmp;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixRow<T, columnsCount> Matrix<T, rowsCount, columnsCount>::getDiagonal() {
-    static_assert(rowsCount == columnsCount);
+template<typename T, size_t row_num, size_t column_num>
+MatrixRow<T, column_num> Matrix<T, row_num, column_num>::getDiagonal() {
+    static_assert(row_num == column_num);
 
-    MatrixRow<T, columnsCount> diagonal;
+    MatrixRow<T, column_num> diagonal;
 
-    for (size_t i = 0; i < rowsCount; ++i) {
+    for (size_t i = 0; i < row_num; ++i) {
         *diagonal(i) = *(*this)(i, i);
     }
 
     return diagonal;
 }
 
-/**********************************************************************************************************************/
-
-
-template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::transpose() {
-    Matrix<T, columnsCount, rowsCount> transposed(*this);
-    for (size_t i = 0; i < rowsCount; ++i) {
-        for (size_t j = i + 1; j < columnsCount; ++j) {
+template<typename T, size_t row_num, size_t column_num>
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::transpose() {
+    Matrix<T, column_num, row_num> transposed(*this);
+    for (size_t i = 0; i < row_num; ++i) {
+        for (size_t j = i + 1; j < column_num; ++j) {
             std::swap(*(transposed(j, i)), *(transposed(i, j)));
         }
     }
     return transposed;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::multiply(Matrix &other) {
-    Matrix<T, rowsCount, columnsCount> res;
+template<typename T, size_t row_num, size_t column_num>
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::multiply(Matrix &other) {
+    Matrix<T, row_num, column_num> res;
 
-    for (size_t i = 0; i < rowsCount; ++i) {
-        for (size_t j = 0; j < other.getColumnsCount(); ++j) {
-            for (size_t k = 0; k < columnsCount; ++k) {
+    for (size_t i = 0; i < row_num; ++i) {
+        for (size_t j = 0; j < column_num; ++j) {
+            for (size_t k = 0; k < column_num; ++k) {
                 *res(i, j) += *(*this)(i, k) * *other(k, j);
             }
         }
@@ -275,12 +214,12 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::multiply(
 }
 
 
-//template<typename T, size_t rowsCount, size_t columnsCount>
-//void Matrix<T, rowsCount, columnsCount>::__mult__(MatrixBase<T, rowsCount, columnsCount> &res,
-//                                                  const MatrixBase<T, rowsCount, columnsCount> &other,
+//template<typename T, size_t row_num, size_t column_num>
+//void Matrix<T, row_num, column_num>::__mult__(MatrixBase<T, row_num, column_num> &res,
+//                                                  const MatrixBase<T, row_num, column_num> &other,
 //                                                  const bool MODE) {
-//    for (size_t i = 0; i < rowsCount; ++i) {
-//        for (size_t j = 0; j < columnsCount; ++j) {
+//    for (size_t i = 0; i < row_num; ++i) {
+//        for (size_t j = 0; j < column_num; ++j) {
 //            if (MODE == IS_ROW) {
 //                *res(i) += *(*this)(j, i) * *other(j);
 //            } else {
@@ -290,84 +229,84 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::multiply(
 //    }
 //}
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixColumn<T, rowsCount> Matrix<T, rowsCount, columnsCount>::multiply(MatrixColumn<T, rowsCount> &other) {
-    MatrixColumn<T, rowsCount> res;
-    for (size_t i = 0; i < rowsCount; ++i) {
-        for (size_t j = 0; j < columnsCount; ++j) {
+template<typename T, size_t row_num, size_t column_num>
+MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::multiply(MatrixColumn<T, row_num> &other) {
+    MatrixColumn<T, row_num> res;
+    for (size_t i = 0; i < row_num; ++i) {
+        for (size_t j = 0; j < column_num; ++j) {
             *res(i) += *(*this)(i, j) * *other(j);
         }
     }
     return res;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixRow<T, columnsCount> Matrix<T, rowsCount, columnsCount>::multiply(MatrixRow<T, columnsCount> &other) {
-    MatrixRow<T, columnsCount> res;
-    for (size_t i = 0; i < columnsCount; ++i) {
-        for (size_t j = 0; j < rowsCount; ++j) {
+template<typename T, size_t row_num, size_t column_num>
+MatrixRow<T, column_num> Matrix<T, row_num, column_num>::multiply(MatrixRow<T, column_num> &other) {
+    MatrixRow<T, column_num> res;
+    for (size_t i = 0; i < column_num; ++i) {
+        for (size_t j = 0; j < row_num; ++j) {
             *res(i) += *(*this)(j, i) * *other(j);
         }
     }
     return res;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::add(MatrixRow<T, columnsCount> &other) {
-    Matrix<T, rowsCount, columnsCount> res;
-    for (size_t i = 0; i < rowsCount; ++i) {
-        for (size_t j = 0; j < columnsCount; ++j) {
+template<typename T, size_t row_num, size_t column_num>
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(MatrixRow<T, column_num> &other) {
+    Matrix<T, row_num, column_num> res;
+    for (size_t i = 0; i < row_num; ++i) {
+        for (size_t j = 0; j < column_num; ++j) {
             *res(i, j) += *(*this)(i, j) + *other(j);
         }
     }
     return res;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::add(MatrixColumn<T, columnsCount> &other) {
-    Matrix<T, rowsCount, columnsCount> res;
-    for (size_t i = 0; i < rowsCount; ++i) {
-        for (size_t j = 0; j < columnsCount; ++j) {
+template<typename T, size_t row_num, size_t column_num>
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(MatrixColumn<T, column_num> &other) {
+    Matrix<T, row_num, column_num> res;
+    for (size_t i = 0; i < row_num; ++i) {
+        for (size_t j = 0; j < column_num; ++j) {
             *res(j, i) += *(*this)(j, i) + *other(j);
         }
     }
     return res;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::subtract(MatrixRow<T, columnsCount> &other) {
-    Matrix<T, rowsCount, columnsCount> res;
-    for (size_t i = 0; i < rowsCount; ++i) {
-        for (size_t j = 0; j < columnsCount; ++j) {
+template<typename T, size_t row_num, size_t column_num>
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::subtract(MatrixRow<T, column_num> &other) {
+    Matrix<T, row_num, column_num> res;
+    for (size_t i = 0; i < row_num; ++i) {
+        for (size_t j = 0; j < column_num; ++j) {
             *res(i, j) += *(*this)(i, j) - *other(j);
         }
     }
     return res;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount>
-Matrix<T, rowsCount, columnsCount>::subtract(MatrixColumn<T, columnsCount> &other) {
-    Matrix<T, rowsCount, columnsCount> res;
-    for (size_t i = 0; i < rowsCount; ++i) {
-        for (size_t j = 0; j < columnsCount; ++j) {
+template<typename T, size_t row_num, size_t column_num>
+Matrix<T, row_num, column_num>
+Matrix<T, row_num, column_num>::subtract(MatrixColumn<T, column_num> &other) {
+    Matrix<T, row_num, column_num> res;
+    for (size_t i = 0; i < row_num; ++i) {
+        for (size_t j = 0; j < column_num; ++j) {
             *res(j, i) += *(*this)(j, i) - *other(j);
         }
     }
     return res;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-MatrixSlice<T> Matrix<T, rowsCount, columnsCount>::slice(size_t start, size_t stop) {
-    if (stop > rowsCount * columnsCount) {
+template<typename T, size_t row_num, size_t column_num>
+MatrixSlice<T> Matrix<T, row_num, column_num>::slice(size_t start, size_t stop) {
+    if (stop > row_num * column_num) {
         throw std::runtime_error("slice out of range");
     }
 
     return MatrixSlice<T>(this->begin() + start, start, stop, this->cells.size());
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-void getCofactor(Matrix<T, rowsCount, columnsCount> mat, Matrix<T, rowsCount, columnsCount> &temp, size_t rowSrc,
+template<typename T, size_t row_num, size_t column_num>
+void getCofactor(Matrix<T, row_num, column_num> mat, Matrix<T, row_num, column_num> &temp, size_t rowSrc,
                  size_t columnSrc, size_t size) {
     size_t i = 0;
     size_t j = 0;
@@ -385,9 +324,9 @@ void getCofactor(Matrix<T, rowsCount, columnsCount> mat, Matrix<T, rowsCount, co
     }
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-T Matrix<T, rowsCount, columnsCount>::getDeterminant(size_t size) {
-    static_assert(rowsCount == columnsCount);
+template<typename T, size_t row_num, size_t column_num>
+T Matrix<T, row_num, column_num>::getDeterminant(size_t size) {
+    static_assert(row_num == column_num);
 
     if (size == 1) {
         return *(*this)(0, 0);
@@ -396,27 +335,26 @@ T Matrix<T, rowsCount, columnsCount>::getDeterminant(size_t size) {
     }
 
     T result = 0;
-    Matrix<T, rowsCount, columnsCount> sMatrix;
+    Matrix<T, row_num, column_num> sMatrix;
 
     for (size_t i = 0; i < size; ++i) {
         getCofactor((*this), sMatrix, 0, i, size);
-        result += (T) (std::pow(-1, 2 + i) * *(*this)(0, i)
-                       * sMatrix.getDeterminant(size - 1));
+        result += (T) (std::pow(-1, 2 + i) * *(*this)(0, i) * sMatrix.getDeterminant(size - 1));
     }
 
     return result;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::getAdjoint() {
-    Matrix<T, rowsCount, columnsCount> adj;
-    auto size = columnsCount;
+template<typename T, size_t row_num, size_t column_num>
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::getAdjoint() {
+    Matrix<T, row_num, column_num> adj;
+    auto size = column_num;
 
     if (size == 1) {
         *adj(0, 0) = 1;
         return adj;
     }
-    Matrix<T, rowsCount, columnsCount> subMatrix;
+    Matrix<T, row_num, column_num> subMatrix;
 
     for (size_t i = 0; i < size; ++i) {
         for (size_t j = 0; j < size; ++j) {
@@ -427,19 +365,19 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::getAdjoin
     return adj;
 }
 
-template<typename T, size_t rowsCount, size_t columnsCount>
-Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::invert() {
-    static_assert(rowsCount == columnsCount);
+template<typename T, size_t row_num, size_t column_num>
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::invert() {
+    static_assert(row_num == column_num);
 
-    Matrix<T, rowsCount, columnsCount> inv;
+    Matrix<T, row_num, column_num> inv;
 
-    auto det = this->getDeterminant(columnsCount);
+    auto det = this->getDeterminant(column_num);
 
     if (det != 0) {
         auto adj = this->getAdjoint();
 
-        for (size_t i = 0; i < rowsCount; ++i) {
-            for (size_t j = 0; j < columnsCount; j++) {
+        for (size_t i = 0; i < row_num; ++i) {
+            for (size_t j = 0; j < column_num; j++) {
                 *inv(i, j) = *adj(i, j) / det;
             }
         }
@@ -447,4 +385,4 @@ Matrix<T, rowsCount, columnsCount> Matrix<T, rowsCount, columnsCount>::invert() 
     return inv;
 }
 
-#endif //MATRIXCALC_MATRIX_H
+#endif//MATRIXCALC_MATRIX_H

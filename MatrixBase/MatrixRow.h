@@ -5,63 +5,48 @@
 
 #include "MatrixBase.h"
 
-#define ROW 1
+template<typename T, size_t column_num>
+class MatrixRow : public MatrixBase<T, 1, column_num> {
+    using MatrixBase<T, 1, column_num>::cells;
+    using MatrixBase<T, 1, column_num>::MatrixBase;
 
-template<typename T, size_t columnsCount>
-class MatrixRow : public MatrixBase<T, ROW, columnsCount> {
-    using MatrixBase<T, ROW, columnsCount>::cells;
-
-    using MatrixBase<T, ROW, columnsCount>::MatrixBase;
 public:
-    using MatrixBase<T, ROW, columnsCount>::operator+=;
+    using MatrixBase<T, 1, column_num>::operator+=;
+    using MatrixBase<T, 1, column_num>::operator+;
+    using MatrixBase<T, 1, column_num>::operator-=;
+    using MatrixBase<T, 1, column_num>::operator-;
+    using MatrixBase<T, 1, column_num>::operator*=;
+    using MatrixBase<T, 1, column_num>::operator*;
+    using MatrixBase<T, 1, column_num>::operator=;
+    using MatrixBase<T, 1, column_num>::operator==;
+    using MatrixBase<T, 1, column_num>::begin;
+    using MatrixBase<T, 1, column_num>::end;
 
-    using MatrixBase<T, ROW, columnsCount>::operator+;
-
-    using MatrixBase<T, ROW, columnsCount>::operator-=;
-
-    using MatrixBase<T, ROW, columnsCount>::operator-;
-
-    using MatrixBase<T, ROW, columnsCount>::operator*=;
-
-    using MatrixBase<T, ROW, columnsCount>::operator*;
-
-    using MatrixBase<T, ROW, columnsCount>::operator=;
-
-    using MatrixBase<T, ROW, columnsCount>::operator==;
-
-    using MatrixBase<T, ROW, columnsCount>::begin;
-
-    using MatrixBase<T, ROW, columnsCount>::end;
-
-    MatrixRow() : MatrixBase<T, ROW, columnsCount>() {};
-
-    MatrixRow(const MatrixRow &other) : MatrixBase<T, ROW, columnsCount>(other) {};
-
-    MatrixRow(std::array<T, columnsCount> &arr) : MatrixBase<T, ROW, columnsCount>(arr) {};
-
-    MatrixRow(const MatrixBase<T, ROW, columnsCount> &other) : MatrixBase<T, ROW, columnsCount>(other) {};
-
-    MatrixRow(const MatrixBase<T, ROW, columnsCount> &&other) : MatrixBase<T, ROW, columnsCount>(other) {};
-
-    MatrixRow operator*=(MatrixBase<T, columnsCount, columnsCount> &other);
-
-    MatrixRow operator*(MatrixBase<T, columnsCount, columnsCount> &other);
+    MatrixRow() : MatrixBase<T, 1, column_num>(){};
+    MatrixRow(const MatrixRow &other) : MatrixBase<T, 1, column_num>(other){};
+    MatrixRow(std::array<T, column_num> &arr) : MatrixBase<T, 1, column_num>(arr){};
+    MatrixRow(const MatrixBase<T, 1, column_num> &other) : MatrixBase<T, 1, column_num>(other){};
+    MatrixRow(const MatrixBase<T, 1, column_num> &&other) : MatrixBase<T, 1, column_num>(other){};
+    MatrixRow operator*=(MatrixBase<T, column_num, column_num> &other);
+    MatrixRow operator*(MatrixBase<T, column_num, column_num> &other);
 
     constexpr T *operator()(size_t i);
 };
 
-template<typename T, size_t columnsCount>
-constexpr T *MatrixRow<T, columnsCount>::operator()(size_t i) {
-    return MatrixBase<T, ROW, columnsCount>::operator()(0, i);
+template<typename T, size_t column_num>
+constexpr T *MatrixRow<T, column_num>::operator()(size_t i) {
+    return MatrixBase<T, 1, column_num>::operator()(0, i);
 }
 
-template<typename T, size_t columnsCount>
-MatrixRow<T, columnsCount> operator+=(const T &num, MatrixRow<T, columnsCount> &matrix) {
+template<typename T, size_t column_num>
+MatrixRow<T, column_num>
+        operator+=(const T &num, MatrixRow<T, column_num> &matrix) {
     return matrix.operator+=(num);
 }
 
-template<typename T, size_t columnsCount>
-MatrixRow<T, columnsCount> operator+(const T &num, MatrixRow<T, columnsCount> &matrix) {
+template<typename T, size_t column_num>
+MatrixRow<T, column_num>
+        operator+(const T &num, MatrixRow<T, column_num> &matrix) {
     return operator+=(num, matrix);
 }
-#endif //MATRIXCALC_MATRIXROW_H
+#endif//MATRIXCALC_MATRIXROW_H
