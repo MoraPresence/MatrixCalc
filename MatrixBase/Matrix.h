@@ -37,35 +37,34 @@ public:
     ~Matrix();
 
 
-    friend std::ostream &operator<< <T, row_num, column_num>(std::ostream &, MatrixBase<T, row_num, column_num> &);
-    constexpr MatrixColumn<T, row_num> operator*=(MatrixColumn<T, row_num> &other);
-    constexpr MatrixColumn<T, row_num> operator*(MatrixColumn<T, row_num> &other);
-    constexpr Matrix operator+=(MatrixRow<T, column_num> &other);
-    constexpr Matrix operator+(MatrixRow<T, column_num> &other);
-    constexpr Matrix operator-=(MatrixRow<T, column_num> &other);
-    constexpr Matrix operator-(MatrixRow<T, column_num> &other);
-    constexpr Matrix operator+=(MatrixColumn<T, row_num> &other);
-    constexpr Matrix operator+(MatrixColumn<T, row_num> &other);
-    constexpr Matrix operator-=(MatrixColumn<T, row_num> &other);
-    constexpr Matrix operator-(MatrixColumn<T, row_num> &other);
-    constexpr Matrix &operator=(std::initializer_list<MatrixRow<T, column_num>> list);
+    constexpr MatrixColumn<T, row_num> operator*=(const MatrixColumn<T, row_num> &other);
+    constexpr MatrixColumn<T, row_num> operator*(const MatrixColumn<T, row_num> &other);
+    constexpr Matrix operator+=(const MatrixRow<T, column_num> &other);
+    constexpr Matrix operator+(const MatrixRow<T, column_num> &other);
+    constexpr Matrix operator-=(const MatrixRow<T, column_num> &other);
+    constexpr Matrix operator-(const MatrixRow<T, column_num> &other);
+    constexpr Matrix operator+=(const MatrixColumn<T, row_num> &other);
+    constexpr Matrix operator+(const MatrixColumn<T, row_num> &other);
+    constexpr Matrix operator-=(const MatrixColumn<T, row_num> &other);
+    constexpr Matrix operator-(const MatrixColumn<T, row_num> &other);
+    constexpr Matrix &operator=(const std::initializer_list<MatrixRow<T, column_num>> list);
 
 
-    MatrixRow<T, column_num> getRow(size_t rowNum);
-    MatrixColumn<T, row_num> getColumn(size_t columnNum);
+    MatrixRow<T, column_num> getRow(const size_t rowNum);
+    MatrixColumn<T, row_num> getColumn(const size_t columnNum);
     MatrixRow<T, column_num> getDiagonal();
     Matrix<T, row_num, column_num> transpose();
-    MatrixColumn<T, row_num> multiply(MatrixColumn<T, row_num> &other);
-    MatrixRow<T, column_num> multiply(MatrixRow<T, column_num> &other);
-    Matrix<T, row_num, column_num> add(MatrixRow<T, column_num> &other);
-    Matrix<T, row_num, column_num> add(MatrixColumn<T, column_num> &other);
-    Matrix<T, row_num, column_num> subtract(MatrixRow<T, column_num> &other);
-    Matrix<T, row_num, column_num> subtract(MatrixColumn<T, column_num> &other);
-    MatrixSlice<T> slice(size_t start, size_t stop);
-    T getDeterminant(size_t size);
+    MatrixColumn<T, row_num> multiply(const MatrixColumn<T, row_num> &other);
+    MatrixRow<T, column_num> multiply(const MatrixRow<T, column_num> &other);
+    Matrix<T, row_num, column_num> add(const MatrixRow<T, column_num> &other);
+    Matrix<T, row_num, column_num> add(const MatrixColumn<T, column_num> &other);
+    Matrix<T, row_num, column_num> subtract(const MatrixRow<T, column_num> &other);
+    Matrix<T, row_num, column_num> subtract(const MatrixColumn<T, column_num> &other);
+    MatrixSlice<T> slice(const size_t start, const size_t stop);
+    T getDeterminant(const size_t size);
     Matrix getAdjoint();
     Matrix invert();
-    Matrix multiply(Matrix &other);
+    Matrix multiply(const Matrix &other);
 };
 
 
@@ -78,68 +77,68 @@ template<typename T, size_t row_num, size_t column_num>
 Matrix<T, row_num, column_num>::~Matrix() = default;
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::operator*=(MatrixColumn<T, row_num> &other) {
+constexpr MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::operator*=(const MatrixColumn<T, row_num> &other) {
     return multiply(other);
 }
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::operator*(MatrixColumn<T, row_num> &other) {
+constexpr MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::operator*(const MatrixColumn<T, row_num> &other) {
     return *this *= other;
 }
 
 template<typename T, size_t column_num>
-MatrixRow<T, column_num> MatrixRow<T, column_num>::operator*=(MatrixBase<T, column_num, column_num> &other) {
+MatrixRow<T, column_num> MatrixRow<T, column_num>::operator*=(const MatrixBase<T, column_num, column_num> &other) {
     return Matrix<T, column_num, column_num>(other).multiply(*this);
 }
 
 template<typename T, size_t column_num>
-MatrixRow<T, column_num> MatrixRow<T, column_num>::operator*(MatrixBase<T, column_num, column_num> &other) {
+MatrixRow<T, column_num> MatrixRow<T, column_num>::operator*(const MatrixBase<T, column_num, column_num> &other) {
     return *this *= other;
 }
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+=(MatrixRow<T, column_num> &other) {
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+=(const MatrixRow<T, column_num> &other) {
     return add(other);
 }
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+(MatrixRow<T, column_num> &other) {
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+(const MatrixRow<T, column_num> &other) {
     return *this += other;
 }
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-=(MatrixRow<T, column_num> &other) {
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-=(const MatrixRow<T, column_num> &other) {
     return subtract(other);
 }
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-(MatrixRow<T, column_num> &other) {
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-(const MatrixRow<T, column_num> &other) {
     return *this -= other;
 }
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+=(MatrixColumn<T, row_num> &other) {
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+=(const MatrixColumn<T, row_num> &other) {
     return add(other);
 }
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+(MatrixColumn<T, row_num> &other) {
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator+(const MatrixColumn<T, row_num> &other) {
     return *this += other;
 }
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-=(MatrixColumn<T, row_num> &other) {
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-=(const MatrixColumn<T, row_num> &other) {
     return subtract(other);
 }
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-(MatrixColumn<T, row_num> &other) {
+constexpr Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::operator-(const MatrixColumn<T, row_num> &other) {
     return *this -= other;
 }
 
 template<typename T, size_t row_num, size_t column_num>
 constexpr Matrix<T, row_num, column_num> &
-Matrix<T, row_num, column_num>::operator=(std::initializer_list<MatrixRow<T, column_num>> list) {
+Matrix<T, row_num, column_num>::operator=(const std::initializer_list<MatrixRow<T, column_num>> list) {
     size_t i = 0;
     for (MatrixRow<T, column_num> row: list) {
         std::copy(row.begin(), row.end(), this->begin() + row_num * i);
@@ -200,7 +199,7 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::transpose() {
 }
 
 template<typename T, size_t row_num, size_t column_num>
-Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::multiply(Matrix &other) {
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::multiply(const Matrix &other) {
     Matrix<T, row_num, column_num> res;
 
     for (size_t i = 0; i < row_num; ++i) {
@@ -230,7 +229,7 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::multiply(Matrix &
 //}
 
 template<typename T, size_t row_num, size_t column_num>
-MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::multiply(MatrixColumn<T, row_num> &other) {
+MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::multiply(const MatrixColumn<T, row_num> &other) {
     MatrixColumn<T, row_num> res;
     for (size_t i = 0; i < row_num; ++i) {
         for (size_t j = 0; j < column_num; ++j) {
@@ -241,7 +240,7 @@ MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::multiply(MatrixColumn<T
 }
 
 template<typename T, size_t row_num, size_t column_num>
-MatrixRow<T, column_num> Matrix<T, row_num, column_num>::multiply(MatrixRow<T, column_num> &other) {
+MatrixRow<T, column_num> Matrix<T, row_num, column_num>::multiply(const MatrixRow<T, column_num> &other) {
     MatrixRow<T, column_num> res;
     for (size_t i = 0; i < column_num; ++i) {
         for (size_t j = 0; j < row_num; ++j) {
@@ -252,7 +251,7 @@ MatrixRow<T, column_num> Matrix<T, row_num, column_num>::multiply(MatrixRow<T, c
 }
 
 template<typename T, size_t row_num, size_t column_num>
-Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(MatrixRow<T, column_num> &other) {
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(const MatrixRow<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
     for (size_t i = 0; i < row_num; ++i) {
         for (size_t j = 0; j < column_num; ++j) {
@@ -263,7 +262,7 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(MatrixRow<T, 
 }
 
 template<typename T, size_t row_num, size_t column_num>
-Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(MatrixColumn<T, column_num> &other) {
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(const MatrixColumn<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
     for (size_t i = 0; i < row_num; ++i) {
         for (size_t j = 0; j < column_num; ++j) {
@@ -274,7 +273,7 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(MatrixColumn<
 }
 
 template<typename T, size_t row_num, size_t column_num>
-Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::subtract(MatrixRow<T, column_num> &other) {
+Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::subtract(const MatrixRow<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
     for (size_t i = 0; i < row_num; ++i) {
         for (size_t j = 0; j < column_num; ++j) {
@@ -286,7 +285,7 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::subtract(MatrixRo
 
 template<typename T, size_t row_num, size_t column_num>
 Matrix<T, row_num, column_num>
-Matrix<T, row_num, column_num>::subtract(MatrixColumn<T, column_num> &other) {
+Matrix<T, row_num, column_num>::subtract(const MatrixColumn<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
     for (size_t i = 0; i < row_num; ++i) {
         for (size_t j = 0; j < column_num; ++j) {

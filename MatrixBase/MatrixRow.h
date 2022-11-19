@@ -27,14 +27,25 @@ public:
     MatrixRow(std::array<T, column_num> &arr) : MatrixBase<T, 1, column_num>(arr){};
     MatrixRow(const MatrixBase<T, 1, column_num> &other) : MatrixBase<T, 1, column_num>(other){};
     MatrixRow(const MatrixBase<T, 1, column_num> &&other) : MatrixBase<T, 1, column_num>(other){};
-    MatrixRow operator*=(MatrixBase<T, column_num, column_num> &other);
-    MatrixRow operator*(MatrixBase<T, column_num, column_num> &other);
+    MatrixRow operator*=(const MatrixBase<T, column_num, column_num> &other);
+    MatrixRow operator*(const MatrixBase<T, column_num, column_num> &other);
 
-    constexpr T *operator()(size_t i);
+    typename std::array<T, column_num>
+            ::const_iterator operator()(const size_t &i) const;
+
+    typename std::array<T, column_num>
+            ::iterator operator()(const size_t &i);
 };
 
 template<typename T, size_t column_num>
-constexpr T *MatrixRow<T, column_num>::operator()(size_t i) {
+typename std::array<T, column_num>
+        ::const_iterator MatrixRow<T, column_num>::operator()(const size_t &i) const {
+    return MatrixBase<T, 1, column_num>::operator()(0, i);
+}
+
+template<typename T, size_t column_num>
+typename std::array<T, column_num>
+        ::iterator MatrixRow<T, column_num>::operator()(const size_t &i) {
     return MatrixBase<T, 1, column_num>::operator()(0, i);
 }
 

@@ -27,11 +27,22 @@ public:
     MatrixColumn(const MatrixBase<T, row_num, 1> &other) : MatrixBase<T, row_num, 1>(other){};
     MatrixColumn(const MatrixBase<T, row_num, 1> &&other) : MatrixBase<T, row_num, 1>(other){};
 
-    constexpr T *operator()(size_t i);
+    typename std::array<T, row_num>
+            ::const_iterator operator()(const size_t &i) const;
+
+    typename std::array<T, row_num>
+            ::iterator operator()(const size_t &i);
 };
 
 template<typename T, size_t row_num>
-constexpr T *MatrixColumn<T, row_num>::operator()(size_t i) {
+typename std::array<T, row_num>
+        ::const_iterator MatrixColumn<T, row_num>::operator()(const size_t &i) const {
+    return MatrixBase<T, row_num, 1>::operator()(i, 0);
+}
+
+template<typename T, size_t row_num>
+typename std::array<T, row_num>
+        ::iterator MatrixColumn<T, row_num>::operator()(const size_t &i) {
     return MatrixBase<T, row_num, 1>::operator()(i, 0);
 }
 

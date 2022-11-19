@@ -19,7 +19,6 @@ public:
     uint32_t getLen() { return _len; }
     ~MatrixSlice();
     T operator()(size_t i);
-    friend std::ostream &operator<< <>(std::ostream &, MatrixSlice<T> &);
 
 private:
     size_t _cap;
@@ -55,7 +54,7 @@ T MatrixSlice<T>::operator()(size_t i) {
 }
 
 template<typename T>
-std::ostream &operator<<(std::ostream &out, MatrixSlice<T> &slice) {
+std::ostream &operator<<(std::ostream &out, const MatrixSlice<T> &slice) {
     out << "{ ";
     for (size_t i = 0; i < slice.getLen(); ++i) {
         out << slice(i) << " ";
