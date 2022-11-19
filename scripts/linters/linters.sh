@@ -19,7 +19,7 @@ function check_log() {
   fi
 }
 
-if [ $# != 2 ]; then
+if [ $# -lt 2 ]; then
   echo "Invalid number of parameters"
   exit 0
 fi
