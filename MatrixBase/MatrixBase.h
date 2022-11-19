@@ -33,7 +33,7 @@ public:
 
     constexpr MatrixBase &operator=(MatrixBase const &other);
     constexpr MatrixBase &operator=(MatrixBase &&other) noexcept;
-    constexpr MatrixBase &operator=(std::initializer_list<T> list);
+    virtual MatrixBase &operator=(std::initializer_list<T> list);
     constexpr MatrixBase operator+(const MatrixBase &other);
     constexpr MatrixBase &operator+=(const MatrixBase &other);
     constexpr MatrixBase operator-(const MatrixBase &other);
@@ -46,10 +46,8 @@ public:
     constexpr MatrixBase operator+(const T &num);
     constexpr MatrixBase &operator-=(const T &num);
     constexpr MatrixBase operator-(const T &num);
-    typename std::array<T, row_num * column_num>
-            ::const_iterator operator()(const size_t &i, const size_t &j) const;
-    typename std::array<T, row_num * column_num>
-            ::iterator operator()(const size_t &i, const size_t &j);
+    typename std::array<T, row_num * column_num>::const_iterator operator()(const size_t &i, const size_t &j) const;
+    typename std::array<T, row_num * column_num>::iterator operator()(const size_t &i, const size_t &j);
     bool operator==(const MatrixBase &other);
     bool operator==(const std::array<T, row_num * column_num> &arr);
 
@@ -99,7 +97,7 @@ MatrixBase<T, row_num, column_num>::operator=(MatrixBase &&other) noexcept {
 }
 
 template<typename T, size_t row_num, size_t column_num>
-constexpr MatrixBase<T, row_num, column_num> &
+MatrixBase<T, row_num, column_num> &
 MatrixBase<T, row_num, column_num>::operator=(std::initializer_list<T> list) {
     std::copy(list.begin(), list.end(), cells.begin());
     return *this;
@@ -145,14 +143,12 @@ MatrixBase<T, row_num, column_num>::operator*(const MatrixBase &other) {
 }
 
 template<typename T, size_t row_num, size_t column_num>
-typename std::array<T, row_num * column_num>
-        ::const_iterator MatrixBase<T, row_num, column_num>::operator()(const size_t &i, const size_t &j) const {
+typename std::array<T, row_num * column_num>::const_iterator MatrixBase<T, row_num, column_num>::operator()(const size_t &i, const size_t &j) const {
     return cells.begin() + (i * column_num + j);
 }
 
 template<typename T, size_t row_num, size_t column_num>
-typename std::array<T, row_num * column_num>
-        ::iterator MatrixBase<T, row_num, column_num>::operator()(const size_t &i, const size_t &j) {
+typename std::array<T, row_num * column_num>::iterator MatrixBase<T, row_num, column_num>::operator()(const size_t &i, const size_t &j) {
     return cells.begin() + (i * column_num + j);
 }
 

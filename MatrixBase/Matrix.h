@@ -30,7 +30,7 @@ public:
     Matrix() : MatrixBase<T, row_num, column_num>(){};
     Matrix(const Matrix &other) : MatrixBase<T, row_num, column_num>(other){};
     Matrix(const MatrixBase<T, row_num, column_num> &other) : MatrixBase<T, row_num, column_num>(
-                                                                          other){};
+                                                                      other){};
     Matrix(const MatrixBase<T, row_num, column_num> &&other)
         : MatrixBase<T, row_num, column_num>(other){};
     Matrix(std::initializer_list<MatrixRow<T, column_num>> list);
@@ -47,7 +47,7 @@ public:
     constexpr Matrix operator+(const MatrixColumn<T, row_num> &other);
     constexpr Matrix operator-=(const MatrixColumn<T, row_num> &other);
     constexpr Matrix operator-(const MatrixColumn<T, row_num> &other);
-    constexpr Matrix &operator=(const std::initializer_list<MatrixRow<T, column_num>> list);
+    constexpr Matrix &operator=(std::initializer_list<MatrixRow<T, column_num>> list);
 
 
     MatrixRow<T, column_num> getRow(const size_t rowNum);
@@ -147,6 +147,45 @@ Matrix<T, row_num, column_num>::operator=(const std::initializer_list<MatrixRow<
     return *this;
 }
 
+void single_loop_(
+        size_t start_i,
+        const size_t &size_i,
+        const std::function<void(size_t)> &func) {
+    for (size_t i = start_i; i < size_i; ++i) {
+        func(i);
+    }
+}
+
+void double_loop_(
+        size_t start_i,
+        size_t start_j,
+        const size_t &size_i,
+        const size_t &size_j,
+        const std::function<void(size_t, size_t)> &func) {
+    for (size_t i = start_i; i < size_i; ++i) {
+        for (size_t j = start_j; j < size_j; ++j) {
+            func(i, j);
+        }
+    }
+}
+
+void triple_loop_(
+        size_t start_i,
+        size_t start_j,
+        size_t start_k,
+        const size_t &size_i,
+        const size_t &size_j,
+        const size_t &size_k,
+        const std::function<void(size_t, size_t, size_t)> &func) {
+    for (size_t i = start_i; i < size_i; ++i) {
+        for (size_t j = start_j; j < size_j; ++j) {
+            for (size_t k = start_k; k < size_k; ++k) {
+                func(i, j, k);
+            }
+        }
+    }
+}
+
 template<typename T, size_t row_num, size_t column_num>
 MatrixRow<T, column_num> Matrix<T, row_num, column_num>::getRow(const size_t rowNum) {
     MatrixRow<T, column_num> tmp;
@@ -177,13 +216,8 @@ MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::getColumn(const size_t 
 template<typename T, size_t row_num, size_t column_num>
 MatrixRow<T, column_num> Matrix<T, row_num, column_num>::getDiagonal() {
     static_assert(row_num == column_num);
-
     MatrixRow<T, column_num> diagonal;
-
-    for (size_t i = 0; i < row_num; ++i) {
-        *diagonal(i) = *(*this)(i, i);
-    }
-
+    single_loop_(0,  row_num, [&](size_t i) { *diagonal(i) = *(*this)(i, i); });
     return diagonal;
 }
 
@@ -201,85 +235,45 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::transpose() {
 template<typename T, size_t row_num, size_t column_num>
 Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::multiply(const Matrix &other) {
     Matrix<T, row_num, column_num> res;
-
-    for (size_t i = 0; i < row_num; ++i) {
-        for (size_t j = 0; j < column_num; ++j) {
-            for (size_t k = 0; k < column_num; ++k) {
-                *res(i, j) += *(*this)(i, k) * *other(k, j);
-            }
-        }
-    }
+    triple_loop_(0, 0, 0,
+                 row_num, column_num, column_num,
+                 [&](size_t i, size_t j, size_t k) { *res(i, j) += *(*this)(i, k) * *other(k, j); });
     return res;
 }
 
 
-//template<typename T, size_t row_num, size_t column_num>
-//void Matrix<T, row_num, column_num>::__mult__(MatrixBase<T, row_num, column_num> &res,
-//                                                  const MatrixBase<T, row_num, column_num> &other,
-//                                                  const bool MODE) {
-//    for (size_t i = 0; i < row_num; ++i) {
-//        for (size_t j = 0; j < column_num; ++j) {
-//            if (MODE == IS_ROW) {
-//                *res(i) += *(*this)(j, i) * *other(j);
-//            } else {
-//                *res(i) += *(*this)(i, j) * *other(j);
-//            }
-//        }
-//    }
-//}
-
 template<typename T, size_t row_num, size_t column_num>
 MatrixColumn<T, row_num> Matrix<T, row_num, column_num>::multiply(const MatrixColumn<T, row_num> &other) {
     MatrixColumn<T, row_num> res;
-    for (size_t i = 0; i < row_num; ++i) {
-        for (size_t j = 0; j < column_num; ++j) {
-            *res(i) += *(*this)(i, j) * *other(j);
-        }
-    }
+    double_loop_(0, 0, row_num, column_num, [&](size_t i, size_t j) { *res(i) += *(*this)(i, j) * *other(j); });
     return res;
 }
 
 template<typename T, size_t row_num, size_t column_num>
 MatrixRow<T, column_num> Matrix<T, row_num, column_num>::multiply(const MatrixRow<T, column_num> &other) {
     MatrixRow<T, column_num> res;
-    for (size_t i = 0; i < column_num; ++i) {
-        for (size_t j = 0; j < row_num; ++j) {
-            *res(i) += *(*this)(j, i) * *other(j);
-        }
-    }
+    double_loop_(0, 0, row_num, column_num, [&](size_t i, size_t j) { *res(i) += *(*this)(j, i) * *other(j); });
     return res;
 }
 
 template<typename T, size_t row_num, size_t column_num>
 Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(const MatrixRow<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
-    for (size_t i = 0; i < row_num; ++i) {
-        for (size_t j = 0; j < column_num; ++j) {
-            *res(i, j) += *(*this)(i, j) + *other(j);
-        }
-    }
+    double_loop_(0, 0, row_num, column_num, [&](size_t i, size_t j) { *res(i, j) += *(*this)(i, j) + *other(j); });
     return res;
 }
 
 template<typename T, size_t row_num, size_t column_num>
 Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::add(const MatrixColumn<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
-    for (size_t i = 0; i < row_num; ++i) {
-        for (size_t j = 0; j < column_num; ++j) {
-            *res(j, i) += *(*this)(j, i) + *other(j);
-        }
-    }
+    double_loop_(0, 0, row_num, column_num, [&](size_t i, size_t j) { *res(j, i) += *(*this)(j, i) + *other(j); });
     return res;
 }
 
 template<typename T, size_t row_num, size_t column_num>
 Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::subtract(const MatrixRow<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
-    for (size_t i = 0; i < row_num; ++i) {
-        for (size_t j = 0; j < column_num; ++j) {
-            *res(i, j) += *(*this)(i, j) - *other(j);
-        }
-    }
+    double_loop_(0, 0, row_num, column_num, [&](size_t i, size_t j) { *res(i, j) += *(*this)(i, j) - *other(j); });
     return res;
 }
 
@@ -287,11 +281,7 @@ template<typename T, size_t row_num, size_t column_num>
 Matrix<T, row_num, column_num>
 Matrix<T, row_num, column_num>::subtract(const MatrixColumn<T, column_num> &other) {
     Matrix<T, row_num, column_num> res;
-    for (size_t i = 0; i < row_num; ++i) {
-        for (size_t j = 0; j < column_num; ++j) {
-            *res(j, i) += *(*this)(j, i) - *other(j);
-        }
-    }
+    double_loop_(0, 0, row_num, column_num, [&](size_t i, size_t j) { *res(j, i) += *(*this)(j, i) - *other(j); });
     return res;
 }
 
@@ -336,10 +326,10 @@ T Matrix<T, row_num, column_num>::getDeterminant(size_t size) {
     T result = 0;
     Matrix<T, row_num, column_num> sMatrix;
 
-    for (size_t i = 0; i < size; ++i) {
+    single_loop_(0,  size, [&](size_t i) {
         getCofactor((*this), sMatrix, 0, i, size);
         result += (T) (std::pow(-1, 2 + i) * *(*this)(0, i) * sMatrix.getDeterminant(size - 1));
-    }
+    });
 
     return result;
 }
@@ -355,12 +345,10 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::getAdjoint() {
     }
     Matrix<T, row_num, column_num> subMatrix;
 
-    for (size_t i = 0; i < size; ++i) {
-        for (size_t j = 0; j < size; ++j) {
-            getCofactor((*this), subMatrix, i, j, size);
-            *adj(j, i) = (T) (std::pow(-1, 2 + (i + j)) * (subMatrix.getDeterminant(size - 1)));
-        }
-    }
+    double_loop_(0, 0, size, size, [&](size_t i, size_t j) {
+        getCofactor((*this), subMatrix, i, j, size);
+        *adj(j, i) = (T) (std::pow(-1, 2 + (i + j)) * (subMatrix.getDeterminant(size - 1))); });
+
     return adj;
 }
 
@@ -375,11 +363,9 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>::invert() {
     if (det != 0) {
         auto adj = this->getAdjoint();
 
-        for (size_t i = 0; i < row_num; ++i) {
-            for (size_t j = 0; j < column_num; j++) {
-                *inv(i, j) = *adj(i, j) / det;
-            }
-        }
+        double_loop_(0, 0,
+                     row_num, column_num,
+                     [&](size_t i, size_t j) {*inv(i, j) = *adj(i, j) / det; });
     }
     return inv;
 }

@@ -18,7 +18,7 @@ public:
     MatrixSlice(T *elem, size_t start, size_t end, size_t size);
     uint32_t getLen() { return _len; }
     ~MatrixSlice();
-    T operator()(size_t i);
+    T operator()(const size_t &i);
 
 private:
     size_t _cap;
@@ -46,7 +46,7 @@ MatrixSlice<T>::~MatrixSlice() {
 }
 
 template<typename T>
-T MatrixSlice<T>::operator()(size_t i) {
+T MatrixSlice<T>::operator()(const size_t &i) {
     if (i >= _len){
         throw std::runtime_error("Out of slice");
     }
