@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: run_cppcheck
-        run: bash scripts/linters/linters.sh --cppcheck ./MatrixBase/*.h
+        run: bash scripts/linters/linters.sh --cppcheck ./Tests/*.h
 
   cpplint:
       runs-on: ubuntu-latest
