@@ -5,56 +5,48 @@
 
 #include <iostream>
 
-template<typename T>
+template<size_t start, size_t end, typename T, size_t orig>
 class MatrixSlice;
 
-template<typename T>
-std::ostream &operator<<(std::ostream &, MatrixSlice<T> &);
+template<size_t start, size_t end, typename T, size_t orig>
+std::ostream &operator<<(std::ostream &, MatrixSlice<start, end, T, orig> &);
 
-template<typename T>
+template<size_t start, size_t end, typename T, size_t orig>
 class MatrixSlice {
 public:
-    MatrixSlice();
-    MatrixSlice(T *elem, size_t start, size_t end, size_t size);
-    uint32_t getLen() { return _len; }
-    ~MatrixSlice();
-    T operator()(const size_t &i);
+    MatrixSlice() = delete;
+    explicit MatrixSlice(std::array<T, orig> &arr);
+    ~MatrixSlice() = default;
 
+    typename std::array<T, end - start>
+            ::const_iterator operator()(const size_t &i) const;
+    typename std::array<T, end - start>
+            ::iterator operator()(const size_t &i);
 private:
-    size_t _cap;
-    size_t _len;
-    T *_ptrArr;
+    std::array<T, end - start> _arr;
 };
 
-template<typename T>
-MatrixSlice<T>::MatrixSlice() : _cap(0), _len(0), _ptrArr(nullptr)
-{
+template<size_t start, size_t end, typename T, size_t orig>
+MatrixSlice<start, end, T, orig>::MatrixSlice(std::array<T, orig> &arr) {
+    static_assert(end <= orig && start < orig,
+                  "slice(array): array index out of bounds");
+
+    _arr = *reinterpret_cast<std::array<T, end - start> *>(&arr[start]);
+}
+template<size_t start, size_t end, typename T, size_t orig>
+typename std::array<T, end - start>::const_iterator MatrixSlice<start, end, T, orig>
+        ::operator()(const size_t &i) const {
+    return _arr.begin() + i;
+}
+template<size_t start, size_t end, typename T, size_t orig>
+typename std::array<T, end - start>::iterator MatrixSlice<start, end, T, orig>
+        ::operator()(const size_t &i) {
+    return _arr.begin() + i;
 }
 
-template<typename T>
-MatrixSlice<T>::MatrixSlice(T *elem, size_t start, size_t end, size_t size)
-    : _cap(size), _len(end - start), _ptrArr(elem)
-{
-}
 
-template<typename T>
-MatrixSlice<T>::~MatrixSlice() {
-    _cap = 0;
-    _len = 0;
-
-    _ptrArr = nullptr;
-}
-
-template<typename T>
-T MatrixSlice<T>::operator()(const size_t &i) {
-    if (i >= _len){
-        throw std::runtime_error("Out of slice");
-    }
-    return _ptrArr[i];
-}
-
-template<typename T>
-std::ostream &operator<<(std::ostream &out, const MatrixSlice<T> &slice) {
+template<size_t start, size_t end, typename T, size_t orig>
+std::ostream &operator<<(std::ostream &out, const MatrixSlice<start, end, T, orig> &slice) {
     out << "{ ";
     for (size_t i = 0; i < slice.getLen(); ++i) {
         out << slice(i) << " ";

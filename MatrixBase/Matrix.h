@@ -70,8 +70,11 @@ class Matrix : public MatrixBase<T, row_num, column_num> {
             (const MatrixRow<T, column_num> &other);
     Matrix<T, row_num, column_num> subtract
             (const MatrixColumn<T, column_num> &other);
-    MatrixSlice<T> slice(const size_t start, const size_t stop);
-    T getDeterminant(const size_t size);
+
+    template<size_t start, size_t end, typename Key>
+    MatrixSlice<start, end, Key, row_num * column_num> slice();
+
+    T getDeterminant(const size_t &size);
     Matrix getAdjoint();
     Matrix invert();
     Matrix multiply(const Matrix &other);
@@ -338,14 +341,10 @@ Matrix<T, row_num, column_num>
 }
 
 template<typename T, size_t row_num, size_t column_num>
-MatrixSlice<T> Matrix<T, row_num, column_num>
-        ::slice(size_t start, size_t stop) {
-    if (stop > row_num * column_num) {
-        throw std::runtime_error("slice out of range");
-    }
-
-    return MatrixSlice<T>(this->begin() + start, start, stop,
-                          this->cells.size());
+template<size_t start, size_t end, class Key>
+MatrixSlice<start, end, Key, row_num * column_num>
+        Matrix<T, row_num, column_num>::slice() {
+    return MatrixSlice<start, end, Key, row_num * column_num>(this->cells);
 }
 
 template<typename T, size_t row_num, size_t column_num>
@@ -370,7 +369,7 @@ void getCofactor(const Matrix<T, row_num, column_num> &mat,
 }
 
 template<typename T, size_t row_num, size_t column_num>
-T Matrix<T, row_num, column_num>::getDeterminant(size_t size) {
+T Matrix<T, row_num, column_num>::getDeterminant(const size_t &size) {
     static_assert(row_num == column_num);
 
     if (size == 1) {
