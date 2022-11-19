@@ -22,10 +22,10 @@ std::ostream &operator<<(std::ostream &,
 
 template<typename T, size_t row_num, size_t column_num>
 class MatrixBase {
-protected:
+ protected:
     std::array<T, row_num *column_num> cells = {0};
 
-public:
+ public:
     MatrixBase() = default;
     MatrixBase(const MatrixBase &other);
     MatrixBase(MatrixBase &&other) noexcept;

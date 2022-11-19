@@ -33,18 +33,19 @@ MatrixSlice<start, end, T, orig>::MatrixSlice(std::array<T, orig> &arr) {
 
     _arr = *reinterpret_cast<std::array<T, end - start> *>(&arr[start]);
 }
+
 template<size_t start, size_t end, typename T, size_t orig>
 typename std::array<T, end - start>
         ::const_iterator MatrixSlice<start, end, T, orig>
         ::operator()(const size_t &i) const {
     return _arr.begin() + i;
 }
+
 template<size_t start, size_t end, typename T, size_t orig>
 typename std::array<T, end - start>::iterator MatrixSlice<start, end, T, orig>
         ::operator()(const size_t &i) {
     return _arr.begin() + i;
 }
-
 
 template<size_t start, size_t end, typename T, size_t orig>
 std::ostream &operator<<(std::ostream &out,

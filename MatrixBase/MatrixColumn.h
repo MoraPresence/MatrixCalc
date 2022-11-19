@@ -10,7 +10,7 @@ class MatrixColumn : public MatrixBase<T, row_num, 1> {
     using MatrixBase<T, row_num, 1>::cells;
     using MatrixBase<T, row_num, 1>::MatrixBase;
 
-public:
+ public:
     using MatrixBase<T, row_num, 1>::operator+=;
     using MatrixBase<T, row_num, 1>::operator+;
     using MatrixBase<T, row_num, 1>::operator-=;

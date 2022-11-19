@@ -80,7 +80,6 @@ class Matrix : public MatrixBase<T, row_num, column_num> {
     Matrix multiply(const Matrix &other);
 };
 
-
 template<typename T, size_t row_num, size_t column_num>
 Matrix<T, row_num, column_num>
         ::Matrix(std::initializer_list<MatrixRow<T, column_num>> list) {
@@ -277,7 +276,6 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>
                  { *res(i, j) += *(*this)(i, k) * *other(k, j); });
     return res;
 }
-
 
 template<typename T, size_t row_num, size_t column_num>
 MatrixColumn<T, row_num> Matrix<T, row_num, column_num>
