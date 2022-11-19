@@ -23,9 +23,12 @@ public:
     using MatrixBase<T, row_num, 1>::end;
 
     MatrixColumn() : MatrixBase<T, row_num, 1>(){};
-    MatrixColumn(const MatrixColumn &other) : MatrixBase<T, row_num, 1>(other){};
-    MatrixColumn(const MatrixBase<T, row_num, 1> &other) : MatrixBase<T, row_num, 1>(other){};
-    MatrixColumn(const MatrixBase<T, row_num, 1> &&other) : MatrixBase<T, row_num, 1>(other){};
+    MatrixColumn(const MatrixColumn &other)
+        : MatrixBase<T, row_num, 1>(other){};
+    MatrixColumn(const MatrixBase<T, row_num, 1> &other)
+        : MatrixBase<T, row_num, 1>(other){};
+    MatrixColumn(const MatrixBase<T, row_num, 1> &&other)
+        : MatrixBase<T, row_num, 1>(other){};
 
     typename std::array<T, row_num>
             ::const_iterator operator()(const size_t &i) const;
@@ -36,13 +39,15 @@ public:
 
 template<typename T, size_t row_num>
 typename std::array<T, row_num>
-        ::const_iterator MatrixColumn<T, row_num>::operator()(const size_t &i) const {
+        ::const_iterator MatrixColumn<T, row_num>
+                ::operator()(const size_t &i) const {
     return MatrixBase<T, row_num, 1>::operator()(i, 0);
 }
 
 template<typename T, size_t row_num>
 typename std::array<T, row_num>
-        ::iterator MatrixColumn<T, row_num>::operator()(const size_t &i) {
+        ::iterator MatrixColumn<T, row_num>
+                ::operator()(const size_t &i) {
     return MatrixBase<T, row_num, 1>::operator()(i, 0);
 }
 
