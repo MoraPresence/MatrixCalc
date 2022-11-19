@@ -350,7 +350,7 @@ MatrixSlice<T> Matrix<T, row_num, column_num>
 
 template<typename T, size_t row_num, size_t column_num>
 void getCofactor(const Matrix<T, row_num, column_num> &mat,
-                 Matrix<T, row_num, column_num> *temp,
+                 Matrix<T, row_num, column_num> *tmp,
                  size_t rowSrc,
                  size_t columnSrc, size_t size) {
     size_t i = 0;
@@ -359,7 +359,7 @@ void getCofactor(const Matrix<T, row_num, column_num> &mat,
     for (size_t row = 0; row < size; row++) {
         for (size_t col = 0; col < size; col++) {
             if (row != rowSrc && col != columnSrc) {
-                *temp(i, j++) = *mat(row, col);
+                *(*tmp)(i, j++) = *mat(row, col);
                 if (j == size - 1) {
                     j = 0;
                     i++;
@@ -384,7 +384,7 @@ T Matrix<T, row_num, column_num>::getDeterminant(size_t size) {
     Matrix<T, row_num, column_num> sMatrix;
 
     single_loop_(0,  size, [&](size_t i) {
-        getCofactor((*this), sMatrix, 0, i, size);
+        getCofactor((*this), &sMatrix, 0, i, size);
         result += (T) (std::pow(-1, 2 + i)
                        * *(*this)(0, i)
                        * sMatrix.getDeterminant(size - 1));
@@ -407,7 +407,7 @@ Matrix<T, row_num, column_num> Matrix<T, row_num, column_num>
 
     double_loop_(0, 0, size, size,
                  [&](size_t i, size_t j) {
-        getCofactor((*this), subMatrix, i, j, size);
+        getCofactor((*this), &subMatrix, i, j, size);
         *adj(j, i) = (T) (std::pow(-1, 2 + (i + j))
                           * (subMatrix.getDeterminant(size - 1))); });
 
